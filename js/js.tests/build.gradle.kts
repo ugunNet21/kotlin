@@ -104,14 +104,22 @@ sourceSets {
 
 fun Test.setUpJsBoxTests(jsEnabled: Boolean, jsIrEnabled: Boolean) {
     dependsOn(":dist")
-    if (jsEnabled) dependsOn(testJsRuntime)
+    if (jsEnabled) {
+        dependsOn(testJsRuntime)
+        inputs.files(testJsRuntime)
+    }
     if (jsIrEnabled) {
         dependsOn(":kotlin-stdlib-js-ir:compileKotlinJs")
         systemProperty("kotlin.js.full.stdlib.path", "libraries/stdlib/js-ir/build/classes/kotlin/js/main")
+        inputs.dir(rootDir.resolve("libraries/stdlib/js-ir/build/classes/kotlin/js/main"))
+
         dependsOn(":kotlin-stdlib-js-ir-minimal-for-test:compileKotlinJs")
         systemProperty("kotlin.js.reduced.stdlib.path", "libraries/stdlib/js-ir-minimal-for-test/build/classes/kotlin/js/main")
+        inputs.dir(rootDir.resolve("libraries/stdlib/js-ir-minimal-for-test/build/classes/kotlin/js/main"))
+
         dependsOn(":kotlin-test:kotlin-test-js-ir:compileKotlinJs")
         systemProperty("kotlin.js.kotlin.test.path", "libraries/kotlin.test/js-ir/build/classes/kotlin/js/main")
+        inputs.dir(rootDir.resolve("libraries/kotlin.test/js-ir/build/classes/kotlin/js/main"))
     }
 
     exclude("org/jetbrains/kotlin/js/test/wasm/semantics/*")
@@ -126,6 +134,8 @@ fun Test.setUpJsBoxTests(jsEnabled: Boolean, jsIrEnabled: Boolean) {
 
 fun Test.setUpBoxTests() {
     workingDir = rootDir
+    dependsOn(antLauncherJar)
+    inputs.files(antLauncherJar)
     doFirst {
         systemProperty("kotlin.ant.classpath", antLauncherJar.asPath)
         systemProperty("kotlin.ant.launcher.class", "org.apache.tools.ant.Main")
@@ -141,8 +151,23 @@ fun Test.setUpBoxTests() {
     }
 }
 
+val testDataDir = project(":js:js.translator").projectDir.resolve("testData")
+
 projectTest(parallel = true) {
     setUpJsBoxTests(jsEnabled = true, jsIrEnabled = true)
+
+    inputs.dir(rootDir.resolve("compiler/cli/cli-common/resources")) // compiler.xml
+
+    inputs.dir(testDataDir)
+    inputs.dir(rootDir.resolve("dist"))
+    inputs.dir(rootDir.resolve("compiler/testData"))
+    inputs.dir(rootDir.resolve("libraries/stdlib/api/js"))
+    inputs.dir(rootDir.resolve("libraries/stdlib/api/js-v1"))
+
+    systemProperty("kotlin.js.test.root.out.dir", "$buildDir/")
+    outputs.dir("$buildDir/out")
+    outputs.dir("$buildDir/out-min")
+    outputs.dir("$buildDir/out-pir")
 }
 
 projectTest("jsTest", true) {
@@ -189,16 +214,25 @@ projectTest("quickTest", true) {
 testsJar {}
 
 val generateTests by generator("org.jetbrains.kotlin.generators.tests.GenerateJsTestsKt")
-val testDataDir = project(":js:js.translator").projectDir.resolve("testData")
 
-extensions.getByType(NodeExtension::class.java).nodeModulesDir = testDataDir
+extensions.getByType(NodeExtension::class.java).nodeModulesDir = buildDir
+
+val prepareMochaTestData by tasks.registering(Copy::class) {
+    from(rootDir.resolve("js/js.translator/testData")) {
+        include("package.json")
+        include("test.js")
+    }
+    into(buildDir)
+}
 
 val npmInstall by tasks.getting(NpmTask::class) {
-    setWorkingDir(testDataDir)
+    dependsOn(prepareMochaTestData)
+    setWorkingDir(buildDir)
 }
 
 val runMocha by task<NpmTask> {
-    setWorkingDir(testDataDir)
+    dependsOn(":dist")
+    setWorkingDir(buildDir)
 
     val target = if (project.hasProperty("teamcity")) "runOnTeamcity" else "test"
     setArgs(listOf("run", target))
@@ -209,6 +243,15 @@ val runMocha by task<NpmTask> {
 
     val check by tasks
     check.dependsOn(this)
+
+    doFirst {
+        setEnvironment(
+            mapOf(
+                "KOTLIN_JS_LOCATION" to rootDir.resolve("dist/js/kotlin.js"),
+                "KOTLIN_JS_TEST_LOCATION" to rootDir.resolve("dist/js/kotlin-test.js")
+            )
+        )
+    }
 }
 
 enum class OsName { WINDOWS, MAC, LINUX, UNKNOWN }
