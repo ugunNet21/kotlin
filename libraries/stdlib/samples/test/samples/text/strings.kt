@@ -6,15 +6,15 @@ import kotlin.test.*
 class Strings {
 
     @Sample
-    fun capitalize() {
-        assertPrints("abcd".capitalize(), "Abcd")
-        assertPrints("Abcd".capitalize(), "Abcd")
+    fun capitalizeFirst() {
+        assertPrints("abcd".capitalizeFirst(), "Abcd")
+        assertPrints("Abcd".capitalizeFirst(), "Abcd")
     }
 
     @Sample
-    fun decapitalize() {
-        assertPrints("abcd".decapitalize(), "abcd")
-        assertPrints("Abcd".decapitalize(), "abcd")
+    fun decapitalizeFirst() {
+        assertPrints("abcd".decapitalizeFirst(), "abcd")
+        assertPrints("Abcd".decapitalizeFirst(), "abcd")
     }
 
     @Sample
@@ -205,13 +205,13 @@ class Strings {
     }
 
     @Sample
-    fun toLowerCase() {
-        assertPrints("Iced frappé!".toLowerCase(), "iced frappé!")
+    fun lowercase() {
+        assertPrints("Iced frappé!".lowercase(), "iced frappé!")
     }
 
     @Sample
-    fun toUpperCase() {
-        assertPrints("Iced frappé!".toUpperCase(), "ICED FRAPPÉ!")
+    fun uppercase() {
+        assertPrints("Iced frappé!".uppercase(), "ICED FRAPPÉ!")
     }
 
     @Sample

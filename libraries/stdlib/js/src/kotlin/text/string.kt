@@ -168,19 +168,35 @@ public actual fun String.encodeToByteArray(
 
 /**
  * Returns a copy of this string converted to upper case using the rules of the default locale.
- *
- * @sample samples.text.Strings.toUpperCase
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `uppercase()`", ReplaceWith("uppercase()"))
 @kotlin.internal.InlineOnly
 public actual inline fun String.toUpperCase(): String = asDynamic().toUpperCase()
 
 /**
- * Returns a copy of this string converted to lower case using the rules of the default locale.
+ * Returns a copy of this string converted to upper case using Unicode mapping rules of the invariant locale.
  *
- * @sample samples.text.Strings.toLowerCase
+ * @sample samples.text.Strings.uppercase
  */
 @kotlin.internal.InlineOnly
+public actual inline fun String.uppercase(): String = asDynamic().toUpperCase()
+
+/**
+ * Returns a copy of this string converted to lower case using the rules of the default locale.
+ */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `lowercase()`", ReplaceWith("lowercase()"))
+@kotlin.internal.InlineOnly
 public actual inline fun String.toLowerCase(): String = asDynamic().toLowerCase()
+
+/**
+ * Returns a copy of this string converted to lower case using Unicode mapping rules of the invariant locale.
+ *
+ * @sample samples.text.Strings.lowercase
+ */
+@kotlin.internal.InlineOnly
+public actual inline fun String.lowercase(): String = asDynamic().toLowerCase()
 
 @kotlin.internal.InlineOnly
 internal actual inline fun String.nativeIndexOf(str: String, fromIndex: Int): Int = asDynamic().indexOf(str, fromIndex)

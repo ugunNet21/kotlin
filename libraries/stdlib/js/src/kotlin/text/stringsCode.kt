@@ -75,21 +75,43 @@ public actual fun CharSequence.regionMatches(thisOffset: Int, other: CharSequenc
  *
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
- *
- * @sample samples.text.Strings.capitalize
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `capitalizeFirst()`", ReplaceWith("capitalizeFirst()"))
 public actual fun String.capitalize(): String {
+    @Suppress("DEPRECATION")
     return if (isNotEmpty()) substring(0, 1).toUpperCase() + substring(1) else this
+}
+
+/**
+ * Returns a copy of this string having its first letter titlecased using Unicode mapping rules of the invariant locale,
+ * or the original string if it's empty or already starts with a title case letter.
+ *
+ * @sample samples.text.Strings.capitalizeFirst
+ */
+public actual fun String.capitalizeFirst(): String {
+    return if (isNotEmpty()) substring(0, 1).uppercase() + substring(1) else this
 }
 
 /**
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
- *
- * @sample samples.text.Strings.decapitalize
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `decapitalizeFirst()`", ReplaceWith("decapitalizeFirst()"))
 public actual fun String.decapitalize(): String {
+    @Suppress("DEPRECATION")
     return if (isNotEmpty()) substring(0, 1).toLowerCase() + substring(1) else this
+}
+
+/**
+ * Returns a copy of this string having its first letter lowercased using Unicode mapping rules of the invariant locale,
+ * or the original string if it's empty or already starts with a lower case letter.
+ *
+ * @sample samples.text.Strings.decapitalizeFirst
+ */
+public actual fun String.decapitalizeFirst(): String {
+    return if (isNotEmpty()) substring(0, 1).lowercase() + substring(1) else this
 }
 
 /**

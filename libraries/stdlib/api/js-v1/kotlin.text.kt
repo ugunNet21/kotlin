@@ -118,7 +118,11 @@ public inline fun <V> kotlin.CharSequence.associateWith(valueSelector: (kotlin.C
 @kotlin.SinceKotlin(version = "1.3")
 public inline fun <V, M : kotlin.collections.MutableMap<in kotlin.Char, in V>> kotlin.CharSequence.associateWithTo(destination: M, valueSelector: (kotlin.Char) -> V): M
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Please use locale-insensitive alternative `capitalizeFirst()`", replaceWith = kotlin.ReplaceWith(expression = "capitalizeFirst()", imports = {}))
 public fun kotlin.String.capitalize(): kotlin.String
+
+public fun kotlin.String.capitalizeFirst(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.2")
 public fun kotlin.CharSequence.chunked(size: kotlin.Int): kotlin.collections.List<kotlin.String>
@@ -165,7 +169,11 @@ public inline fun kotlin.CharSequence.count(): kotlin.Int
 
 public inline fun kotlin.CharSequence.count(predicate: (kotlin.Char) -> kotlin.Boolean): kotlin.Int
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Please use locale-insensitive alternative `decapitalizeFirst()`", replaceWith = kotlin.ReplaceWith(expression = "decapitalizeFirst()", imports = {}))
 public fun kotlin.String.decapitalize(): kotlin.String
+
+public fun kotlin.String.decapitalizeFirst(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
@@ -381,6 +389,12 @@ public inline fun kotlin.CharSequence.lastOrNull(predicate: (kotlin.Char) -> kot
 public fun kotlin.CharSequence.lineSequence(): kotlin.sequences.Sequence<kotlin.String>
 
 public fun kotlin.CharSequence.lines(): kotlin.collections.List<kotlin.String>
+
+@kotlin.internal.InlineOnly
+public inline fun kotlin.Char.lowercase(): kotlin.Char
+
+@kotlin.internal.InlineOnly
+public inline fun kotlin.String.lowercase(): kotlin.String
 
 public inline fun <R> kotlin.CharSequence.map(transform: (kotlin.Char) -> R): kotlin.collections.List<R>
 
@@ -907,9 +921,13 @@ public fun kotlin.String.toLongOrNull(): kotlin.Long?
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.String.toLongOrNull(radix: kotlin.Int): kotlin.Long?
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "This function has been renamed to `lowercase()`", replaceWith = kotlin.ReplaceWith(expression = "lowercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.toLowerCase(): kotlin.Char
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Please use locale-insensitive alternative `lowercase()`", replaceWith = kotlin.ReplaceWith(expression = "lowercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.toLowerCase(): kotlin.String
 
@@ -1030,9 +1048,13 @@ public fun kotlin.String.toUShortOrNull(): kotlin.UShort?
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.String.toUShortOrNull(radix: kotlin.Int): kotlin.UShort?
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "This function has been renamed to `uppercase()`", replaceWith = kotlin.ReplaceWith(expression = "uppercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.toUpperCase(): kotlin.Char
 
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Please use locale-insensitive alternative `uppercase()`", replaceWith = kotlin.ReplaceWith(expression = "uppercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.toUpperCase(): kotlin.String
 
@@ -1078,6 +1100,12 @@ public inline fun kotlin.String.trimStart(): kotlin.String
 public inline fun kotlin.String.trimStart(predicate: (kotlin.Char) -> kotlin.Boolean): kotlin.String
 
 public fun kotlin.String.trimStart(vararg chars: kotlin.Char): kotlin.String
+
+@kotlin.internal.InlineOnly
+public inline fun kotlin.Char.uppercase(): kotlin.Char
+
+@kotlin.internal.InlineOnly
+public inline fun kotlin.String.uppercase(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.2")
 public fun kotlin.CharSequence.windowed(size: kotlin.Int, step: kotlin.Int = ..., partialWindows: kotlin.Boolean = ...): kotlin.collections.List<kotlin.String>

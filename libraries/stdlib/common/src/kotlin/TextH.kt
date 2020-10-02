@@ -66,8 +66,29 @@ expect enum class RegexOption {
 // From char.kt
 
 expect fun Char.isWhitespace(): Boolean
-expect fun Char.toLowerCase(): Char
-expect fun Char.toUpperCase(): Char
+
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("This function has been renamed to `lowercase()`", ReplaceWith("lowercase()"))
+@kotlin.internal.InlineOnly
+public inline fun Char.toLowerCase(): Char = lowercase()
+
+/**
+ * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.lowercase
+ */
+public expect fun Char.lowercase(): Char
+
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("This function has been renamed to `uppercase()`", ReplaceWith("uppercase()"))
+@kotlin.internal.InlineOnly
+public inline fun Char.toUpperCase(): Char = uppercase()
+
+/**
+ * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.uppercase
+ */
+public expect fun Char.uppercase(): Char
+
 expect fun Char.isHighSurrogate(): Boolean
 expect fun Char.isLowSurrogate(): Boolean
 
@@ -197,17 +218,31 @@ public expect fun String.substring(startIndex: Int, endIndex: Int): String
 
 /**
  * Returns a copy of this string converted to upper case using the rules of the default locale.
- *
- * @sample samples.text.Strings.toUpperCase
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `uppercase()`", ReplaceWith("uppercase()"))
 public expect fun String.toUpperCase(): String
 
 /**
- * Returns a copy of this string converted to lower case using the rules of the default locale.
+ * Returns a copy of this string converted to upper case using Unicode mapping rules of the invariant locale.
  *
- * @sample samples.text.Strings.toLowerCase
+ * @sample samples.text.Strings.uppercase
  */
+public expect fun String.uppercase(): String
+
+/**
+ * Returns a copy of this string converted to lower case using the rules of the default locale.
+ */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `lowercase()`", ReplaceWith("lowercase()"))
 public expect fun String.toLowerCase(): String
+
+/**
+ * Returns a copy of this string converted to lower case using Unicode mapping rules of the invariant locale.
+ *
+ * @sample samples.text.Strings.lowercase
+ */
+public expect fun String.lowercase(): String
 
 /**
  * Returns a copy of this string having its first letter titlecased using the rules of the default locale,
@@ -215,18 +250,34 @@ public expect fun String.toLowerCase(): String
  *
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
- *
- * @sample samples.text.Strings.capitalize
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `capitalizeFirst()`", ReplaceWith("capitalizeFirst()"))
 public expect fun String.capitalize(): String
+
+/**
+ * Returns a copy of this string having its first letter titlecased using Unicode mapping rules of the invariant locale,
+ * or the original string if it's empty or already starts with a title case letter.
+ *
+ * @sample samples.text.Strings.capitalizeFirst
+ */
+public expect fun String.capitalizeFirst(): String
 
 /**
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
- *
- * @sample samples.text.Strings.decapitalize
  */
+@DeprecatedSinceKotlin("1.4")
+@Deprecated("Please use locale-insensitive alternative `decapitalizeFirst()`", ReplaceWith("decapitalizeFirst()"))
 public expect fun String.decapitalize(): String
+
+/**
+ * Returns a copy of this string having its first letter lowercased using Unicode mapping rules of the invariant locale,
+ * or the original string if it's empty or already starts with a lower case letter.
+ *
+ * @sample samples.text.Strings.decapitalizeFirst
+ */
+public expect fun String.decapitalizeFirst(): String
 
 public expect fun CharSequence.repeat(n: Int): String
 

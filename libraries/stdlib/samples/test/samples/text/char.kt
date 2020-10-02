@@ -83,16 +83,16 @@ class Chars {
     }
 
     @Sample
-    fun toUpperCase() {
+    fun uppercase() {
         val chars = listOf('a', 'ω', '1', 'A', '+')
-        val upperCases = chars.map { it.toUpperCase() }
+        val upperCases = chars.map { it.uppercase() }
         assertPrints(upperCases, "[A, Ω, 1, A, +]")
     }
 
     @Sample
-    fun toLowerCase() {
+    fun lowercase() {
         val chars = listOf('A', 'Ω', '1', 'a', '+')
-        val lowerCases = chars.map { it.toLowerCase() }
+        val lowerCases = chars.map { it.lowercase() }
         assertPrints(lowerCases, "[a, ω, 1, a, +]")
     }
 
@@ -105,9 +105,9 @@ class Chars {
     }
 
     @Sample
-    fun toTitleCase() {
+    fun titlecase() {
         val chars = listOf('a', 'ǅ', '1', '+')
-        val titleCases = chars.map { it.toTitleCase() }
+        val titleCases = chars.map { it.titlecase() }
         assertPrints(titleCases, "[A, ǅ, 1, +]")
     }
 
