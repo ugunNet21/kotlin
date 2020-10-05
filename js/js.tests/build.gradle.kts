@@ -10,6 +10,7 @@ plugins {
     id("jps-compatible")
     id("com.github.node-gradle.node") version "2.2.0"
     id("de.undercouch.download")
+    id("com.gradle.enterprise.test-distribution") version "1.1.3"
 }
 
 node {
@@ -94,6 +95,8 @@ dependencies {
     
     antLauncherJar(commonDep("org.apache.ant", "ant"))
     antLauncherJar(toolsJar())
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.2")
 }
 
 sourceSets {
@@ -168,6 +171,13 @@ projectTest(parallel = true) {
     outputs.dir("$buildDir/out")
     outputs.dir("$buildDir/out-min")
     outputs.dir("$buildDir/out-pir")
+
+    useJUnitPlatform()
+    distribution {
+        enabled.set(true)
+        maxRemoteExecutors.set(20)
+        requirements.set(setOf("os=${OperatingSystem.current().familyName}"))
+    }
 }
 
 projectTest("jsTest", true) {
