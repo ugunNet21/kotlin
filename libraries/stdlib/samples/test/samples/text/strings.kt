@@ -134,7 +134,7 @@ class Strings {
     fun associateByWithValueTransform() {
         val string = "bonne journée"
         // associate each character by the code of its upper case equivalent and transform the character to upper case
-        val result = string.associateBy({ char -> char.toUpperCase().toInt() }, { char -> char.toUpperCase() })
+        val result = string.associateBy({ char -> char.uppercase().toInt() }, { char -> char.uppercase() })
         // notice each char code occurs only once
         assertPrints(result, "{66=B, 79=O, 78=N, 69=E, 32= , 74=J, 85=U, 82=R, 201=É}")
     }
@@ -154,7 +154,7 @@ class Strings {
         val string = "bonne journée"
         // associate each character by the code of its upper case equivalent and transform the character to upper case
         val result = mutableMapOf<Int, Char>()
-        string.associateByTo(result, { char -> char.toUpperCase().toInt() }, { char -> char.toUpperCase() })
+        string.associateByTo(result, { char -> char.uppercase().toInt() }, { char -> char.uppercase() })
         // notice each char code occurs only once
         assertPrints(result, "{66=B, 79=O, 78=N, 69=E, 32= , 74=J, 85=U, 82=R, 201=É}")
     }
@@ -390,7 +390,7 @@ class Strings {
     @Sample
     fun map() {
         val string = "kotlin"
-        assertPrints(string.map { it.toUpperCase() }, "[K, O, T, L, I, N]")
+        assertPrints(string.map { it.uppercase() }, "[K, O, T, L, I, N]")
     }
 
     @Sample

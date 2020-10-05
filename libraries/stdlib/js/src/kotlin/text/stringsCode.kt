@@ -61,7 +61,7 @@ public actual fun String?.equals(other: String?, ignoreCase: Boolean = false): B
     else if (!ignoreCase)
         this == other
     else
-        other != null && this.toLowerCase() == other.toLowerCase()
+        other != null && this.lowercase() == other.lowercase()
 
 
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")

@@ -242,11 +242,11 @@ public actual fun String.compareTo(other: String, ignoreCase: Boolean = false): 
             var s1 = this.substring(start, end)
             var s2 = other.substring(start, end)
             if (s1 != s2) {
-                s1 = s1.toUpperCase()
-                s2 = s2.toUpperCase()
+                s1 = s1.uppercase()
+                s2 = s2.uppercase()
                 if (s1 != s2) {
-                    s1 = s1.toLowerCase()
-                    s2 = s2.toLowerCase()
+                    s1 = s1.lowercase()
+                    s2 = s2.lowercase()
                     if (s1 != s2) {
                         return s1.compareTo(s2)
                     }

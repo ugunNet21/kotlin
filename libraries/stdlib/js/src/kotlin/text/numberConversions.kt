@@ -18,7 +18,7 @@ public actual inline fun String.toBoolean(): Boolean = this.toBoolean()
  * Returns `true` if this string is not `null` and its content is equal to the word "true", ignoring case, and `false` otherwise.
  */
 @SinceKotlin("1.4")
-public actual fun String?.toBoolean(): Boolean = this != null && this.toLowerCase() == "true"
+public actual fun String?.toBoolean(): Boolean = this != null && this.lowercase() == "true"
 
 /**
  * Parses the string as a signed [Byte] number and returns the result.
@@ -130,7 +130,7 @@ public actual inline fun Short.toString(radix: Int): String = this.toInt().toStr
 @SinceKotlin("1.2")
 public actual fun Int.toString(radix: Int): String = asDynamic().toString(checkRadix(radix))
 
-private fun String.isNaN(): Boolean = when (this.toLowerCase()) {
+private fun String.isNaN(): Boolean = when (this.lowercase()) {
     "nan", "+nan", "-nan" -> true
     else -> false
 }
