@@ -703,8 +703,6 @@ public fun String.capitalize(locale: Locale): String {
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
  */
-@SinceKotlin("1.4")
-@WasExperimental(ExperimentalStdlibApi::class)
 @kotlin.internal.LowPriorityInOverloadResolution
 public fun String.capitalizeFirst(locale: Locale): String {
     if (isNotEmpty()) {
@@ -762,8 +760,6 @@ public fun String.decapitalize(locale: Locale): String {
  * Returns a copy of this string having its first letter lowercased using the rules of the specified [locale],
  * or the original string, if it's empty or already starts with a lower case letter.
  */
-@SinceKotlin("1.4")
-@WasExperimental(ExperimentalStdlibApi::class)
 @kotlin.internal.LowPriorityInOverloadResolution
 public fun String.decapitalizeFirst(locale: Locale): String {
     return if (isNotEmpty() && !this[0].isLowerCase()) substring(0, 1).lowercase(locale) + substring(1) else this
