@@ -118,10 +118,10 @@ public inline fun <V> kotlin.CharSequence.associateWith(valueSelector: (kotlin.C
 @kotlin.SinceKotlin(version = "1.3")
 public inline fun <V, M : kotlin.collections.MutableMap<in kotlin.Char, in V>> kotlin.CharSequence.associateWithTo(destination: M, valueSelector: (kotlin.Char) -> V): M
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "Please use locale-insensitive alternative `capitalizeFirst()`", replaceWith = kotlin.ReplaceWith(expression = "capitalizeFirst()", imports = {}))
 public fun kotlin.String.capitalize(): kotlin.String
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 public fun kotlin.String.capitalizeFirst(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.2")
@@ -169,10 +169,10 @@ public inline fun kotlin.CharSequence.count(): kotlin.Int
 
 public inline fun kotlin.CharSequence.count(predicate: (kotlin.Char) -> kotlin.Boolean): kotlin.Int
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "Please use locale-insensitive alternative `decapitalizeFirst()`", replaceWith = kotlin.ReplaceWith(expression = "decapitalizeFirst()", imports = {}))
 public fun kotlin.String.decapitalize(): kotlin.String
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 public fun kotlin.String.decapitalizeFirst(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -390,9 +390,13 @@ public fun kotlin.CharSequence.lineSequence(): kotlin.sequences.Sequence<kotlin.
 
 public fun kotlin.CharSequence.lines(): kotlin.collections.List<kotlin.String>
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.lowercase(): kotlin.Char
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.lowercase(): kotlin.String
 
@@ -921,13 +925,9 @@ public fun kotlin.String.toLongOrNull(): kotlin.Long?
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.String.toLongOrNull(radix: kotlin.Int): kotlin.Long?
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "This function has been renamed to `lowercase()`", replaceWith = kotlin.ReplaceWith(expression = "lowercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.toLowerCase(): kotlin.Char
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "Please use locale-insensitive alternative `lowercase()`", replaceWith = kotlin.ReplaceWith(expression = "lowercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.toLowerCase(): kotlin.String
 
@@ -1048,13 +1048,9 @@ public fun kotlin.String.toUShortOrNull(): kotlin.UShort?
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.String.toUShortOrNull(radix: kotlin.Int): kotlin.UShort?
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "This function has been renamed to `uppercase()`", replaceWith = kotlin.ReplaceWith(expression = "uppercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.toUpperCase(): kotlin.Char
 
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
-@kotlin.Deprecated(message = "Please use locale-insensitive alternative `uppercase()`", replaceWith = kotlin.ReplaceWith(expression = "uppercase()", imports = {}))
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.toUpperCase(): kotlin.String
 
@@ -1101,9 +1097,13 @@ public inline fun kotlin.String.trimStart(predicate: (kotlin.Char) -> kotlin.Boo
 
 public fun kotlin.String.trimStart(vararg chars: kotlin.Char): kotlin.String
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.Char.uppercase(): kotlin.Char
 
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.uppercase(): kotlin.String
 
