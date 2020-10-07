@@ -10,8 +10,9 @@ plugins {
     id("jps-compatible")
     id("com.github.node-gradle.node") version "2.2.0"
     id("de.undercouch.download")
-    id("com.gradle.enterprise.test-distribution") version "1.1.3"
 }
+
+apply(from = "$rootDir/gradle/testDistribution.gradle.kts")
 
 node {
     download = true
@@ -171,13 +172,6 @@ projectTest(parallel = true) {
     outputs.dir("$buildDir/out")
     outputs.dir("$buildDir/out-min")
     outputs.dir("$buildDir/out-pir")
-
-    useJUnitPlatform()
-    distribution {
-        enabled.set(true)
-        maxRemoteExecutors.set(20)
-        requirements.set(setOf("os=${OperatingSystem.current().familyName}"))
-    }
 }
 
 projectTest("jsTest", true) {

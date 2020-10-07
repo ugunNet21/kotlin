@@ -4,6 +4,8 @@ plugins {
     id("jps-compatible")
 }
 
+apply(from = "$rootDir/gradle/testDistribution.gradle.kts")
+
 dependencies {
     compile(project(":core:descriptors"))
     compile(project(":core:descriptors.jvm"))
@@ -30,6 +32,8 @@ dependencies {
     } else {
         testRuntime(intellijDep()) { includeJars("lz4-1.3.0") }
     }
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.2")
 }
 
 sourceSets {
@@ -40,6 +44,13 @@ sourceSets {
 projectTest(parallel = true) {
     workingDir = rootDir
     dependsOn(":kotlin-stdlib-js-ir:packFullRuntimeKLib")
+
+    inputs.dir(rootDir.resolve("compiler/cli/cli-common/resources")) // compiler.xml
+    inputs.dir(rootDir.resolve("dist"))
+
+    inputs.dir(projectDir.resolve("testData"))
+    inputs.dir(rootDir.resolve("jps-plugin/testData"))
+    inputs.dir(rootDir.resolve("build/js-ir-runtime"))
 }
 
 projectTest("testJvmICWithJdk11", parallel = true) {

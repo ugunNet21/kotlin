@@ -5,8 +5,11 @@ plugins {
     id("jps-compatible")
 }
 
+apply(from = "$rootDir/gradle/testDistribution.gradle.kts")
+
 val robolectricClasspath by configurations.creating
 val parcelizeRuntimeForTests by configurations.creating
+val androidPlugin by configurations.creating
 
 dependencies {
     testCompile(intellijCoreDep()) { includeJars("intellij-core") }
@@ -47,6 +50,8 @@ dependencies {
 
     parcelizeRuntimeForTests(project(":plugins:parcelize:parcelize-runtime")) { isTransitive = false }
     parcelizeRuntimeForTests(project(":kotlin-android-extensions-runtime")) { isTransitive = false }
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.2")
 }
 
 sourceSets {
@@ -60,15 +65,34 @@ sourcesJar()
 
 testsJar()
 
+val prepareAndroidPluginForTests = tasks.register<Copy>("prepareAndroidPluginForTests") {
+    from(androidPlugin) {
+        include("layoutlib-*")
+    }
+    into("$buildDir/androidPluginForTests")
+}
+
 projectTest {
     dependsOn(parcelizeRuntimeForTests)
+    dependsOn(robolectricClasspath)
     dependsOn(":dist")
+    dependsOn(prepareAndroidPluginForTests)
+
     workingDir = rootDir
     useAndroidJar()
+
+    val androidJar by configurations
+    inputs.files(androidJar)
+    inputs.files(parcelizeRuntimeForTests)
+    inputs.files(robolectricClasspath)
+    inputs.dir("$buildDir/androidPlugin")
+    inputs.dir(rootDir.resolve("compiler/cli/cli-common/resources")) // compiler.xml
+    inputs.dir(rootDir.resolve("dist"))
+    inputs.dir(projectDir.resolve("testData"))
+
     doFirst {
         systemProperty("parcelizeRuntime.classpath", parcelizeRuntimeForTests.asPath)
-        val androidPluginPath = File(intellijRootDir(), "plugins/android/lib").canonicalPath
-        systemProperty("ideaSdk.androidPlugin.path", androidPluginPath)
+        systemProperty("ideaSdk.androidPlugin.path", "$buildDir/androidPluginForTests")
         systemProperty("robolectric.classpath", robolectricClasspath.asPath)
     }
 }
