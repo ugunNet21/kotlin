@@ -54,6 +54,7 @@ public fun String.matches(regex: String): Boolean {
 
 public actual fun CharSequence.isBlank(): Boolean = length == 0 || (if (this is String) this else this.toString()).matches("^[\\s\\xA0]+$")
 
+@OptIn(ExperimentalStdlibApi::class)
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String?.equals(other: String?, ignoreCase: Boolean = false): Boolean =
     if (this == null)
@@ -76,10 +77,7 @@ public actual fun CharSequence.regionMatches(thisOffset: Int, other: CharSequenc
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `capitalizeFirst()`", ReplaceWith("capitalizeFirst()"))
 public actual fun String.capitalize(): String {
-    @Suppress("DEPRECATION")
     return if (isNotEmpty()) substring(0, 1).toUpperCase() + substring(1) else this
 }
 
@@ -89,6 +87,8 @@ public actual fun String.capitalize(): String {
  *
  * @sample samples.text.Strings.capitalizeFirst
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public actual fun String.capitalizeFirst(): String {
     return if (isNotEmpty()) substring(0, 1).uppercase() + substring(1) else this
 }
@@ -97,10 +97,7 @@ public actual fun String.capitalizeFirst(): String {
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `decapitalizeFirst()`", ReplaceWith("decapitalizeFirst()"))
 public actual fun String.decapitalize(): String {
-    @Suppress("DEPRECATION")
     return if (isNotEmpty()) substring(0, 1).toLowerCase() + substring(1) else this
 }
 
@@ -110,6 +107,8 @@ public actual fun String.decapitalize(): String {
  *
  * @sample samples.text.Strings.decapitalizeFirst
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public actual fun String.decapitalizeFirst(): String {
     return if (isNotEmpty()) substring(0, 1).lowercase() + substring(1) else this
 }

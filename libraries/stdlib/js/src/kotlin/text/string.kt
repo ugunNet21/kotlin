@@ -169,8 +169,6 @@ public actual fun String.encodeToByteArray(
 /**
  * Returns a copy of this string converted to upper case using the rules of the default locale.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `uppercase()`", ReplaceWith("uppercase()"))
 @kotlin.internal.InlineOnly
 public actual inline fun String.toUpperCase(): String = asDynamic().toUpperCase()
 
@@ -179,14 +177,14 @@ public actual inline fun String.toUpperCase(): String = asDynamic().toUpperCase(
  *
  * @sample samples.text.Strings.uppercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public actual inline fun String.uppercase(): String = asDynamic().toUpperCase()
 
 /**
  * Returns a copy of this string converted to lower case using the rules of the default locale.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `lowercase()`", ReplaceWith("lowercase()"))
 @kotlin.internal.InlineOnly
 public actual inline fun String.toLowerCase(): String = asDynamic().toLowerCase()
 
@@ -195,6 +193,8 @@ public actual inline fun String.toLowerCase(): String = asDynamic().toLowerCase(
  *
  * @sample samples.text.Strings.lowercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public actual inline fun String.lowercase(): String = asDynamic().toLowerCase()
 
@@ -228,6 +228,7 @@ public inline fun String.match(regex: String): Array<String>? = asDynamic().matc
 @kotlin.internal.InlineOnly
 internal inline fun String.nativeReplace(pattern: RegExp, replacement: String): String = asDynamic().replace(pattern, replacement)
 
+@OptIn(ExperimentalStdlibApi::class)
 @SinceKotlin("1.2")
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String.compareTo(other: String, ignoreCase: Boolean = false): Int {

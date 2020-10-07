@@ -288,7 +288,6 @@ class StringTest {
 
     @Test fun capitalize() {
         fun testCapitalize(expected: String, string: String) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.capitalize())
             assertEquals(expected, string.capitalizeFirst())
         }
@@ -300,7 +299,6 @@ class StringTest {
 
     @Test fun decapitalize() {
         fun testDecapitalize(expected: String, string: String) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.decapitalize())
             assertEquals(expected, string.decapitalizeFirst())
         }

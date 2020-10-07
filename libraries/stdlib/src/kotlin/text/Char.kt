@@ -28,6 +28,7 @@ public inline operator fun Char.plus(other: String): String = this.toString() + 
  *
  * @sample samples.text.Chars.equals
  */
+@OptIn(ExperimentalStdlibApi::class)
 public fun Char.equals(other: Char, ignoreCase: Boolean = false): Boolean {
     if (this == other) return true
     if (!ignoreCase) return false

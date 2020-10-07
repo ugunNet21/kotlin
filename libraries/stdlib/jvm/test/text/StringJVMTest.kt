@@ -76,7 +76,6 @@ class StringJVMTest {
 
     @Test fun capitalize() {
         fun testCapitalize(expected: String, string: String) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.capitalize())
             assertEquals(expected, string.capitalizeFirst())
         }
@@ -90,7 +89,6 @@ class StringJVMTest {
 
     @Test fun decapitalize() {
         fun testDecapitalize(expected: String, string: String) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.decapitalize())
             assertEquals(expected, string.decapitalizeFirst())
         }
@@ -101,7 +99,6 @@ class StringJVMTest {
 
     @Test fun capitalizeLocale() {
         fun testCapitalizeLocale(expected: String, string: String, locale: Locale) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.capitalize(locale))
             assertEquals(expected, string.capitalizeFirst(locale))
         }
@@ -123,7 +120,6 @@ class StringJVMTest {
 
     @Test fun decapitalizeLocale() {
         fun testDecapitalizeLocale(expected: String, string: String, locale: Locale) {
-            @Suppress("DEPRECATION")
             assertEquals(expected, string.decapitalize(locale))
             assertEquals(expected, string.decapitalizeFirst(locale))
         }

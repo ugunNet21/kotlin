@@ -67,8 +67,10 @@ expect enum class RegexOption {
 
 expect fun Char.isWhitespace(): Boolean
 
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("This function has been renamed to `lowercase()`", ReplaceWith("lowercase()"))
+/**
+ * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ */
+@OptIn(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
 public inline fun Char.toLowerCase(): Char = lowercase()
 
@@ -76,10 +78,14 @@ public inline fun Char.toLowerCase(): Char = lowercase()
  * Converts this character to lower case using Unicode mapping rules of the invariant locale.
  * @sample samples.text.Chars.lowercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun Char.lowercase(): Char
 
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("This function has been renamed to `uppercase()`", ReplaceWith("uppercase()"))
+/**
+ * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ */
+@OptIn(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
 public inline fun Char.toUpperCase(): Char = uppercase()
 
@@ -87,6 +93,8 @@ public inline fun Char.toUpperCase(): Char = uppercase()
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
  * @sample samples.text.Chars.uppercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun Char.uppercase(): Char
 
 expect fun Char.isHighSurrogate(): Boolean
@@ -219,8 +227,6 @@ public expect fun String.substring(startIndex: Int, endIndex: Int): String
 /**
  * Returns a copy of this string converted to upper case using the rules of the default locale.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `uppercase()`", ReplaceWith("uppercase()"))
 public expect fun String.toUpperCase(): String
 
 /**
@@ -228,13 +234,13 @@ public expect fun String.toUpperCase(): String
  *
  * @sample samples.text.Strings.uppercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun String.uppercase(): String
 
 /**
  * Returns a copy of this string converted to lower case using the rules of the default locale.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `lowercase()`", ReplaceWith("lowercase()"))
 public expect fun String.toLowerCase(): String
 
 /**
@@ -242,6 +248,8 @@ public expect fun String.toLowerCase(): String
  *
  * @sample samples.text.Strings.lowercase
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun String.lowercase(): String
 
 /**
@@ -251,8 +259,6 @@ public expect fun String.lowercase(): String
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `capitalizeFirst()`", ReplaceWith("capitalizeFirst()"))
 public expect fun String.capitalize(): String
 
 /**
@@ -261,14 +267,14 @@ public expect fun String.capitalize(): String
  *
  * @sample samples.text.Strings.capitalizeFirst
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun String.capitalizeFirst(): String
 
 /**
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
  */
-@DeprecatedSinceKotlin("1.4")
-@Deprecated("Please use locale-insensitive alternative `decapitalizeFirst()`", ReplaceWith("decapitalizeFirst()"))
 public expect fun String.decapitalize(): String
 
 /**
@@ -277,6 +283,8 @@ public expect fun String.decapitalize(): String
  *
  * @sample samples.text.Strings.decapitalizeFirst
  */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
 public expect fun String.decapitalizeFirst(): String
 
 public expect fun CharSequence.repeat(n: Int): String
