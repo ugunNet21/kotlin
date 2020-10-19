@@ -9,7 +9,9 @@ import org.jetbrains.kotlin.descriptors.commonizer.builder.DeclarationsBuilderVi
 import org.jetbrains.kotlin.descriptors.commonizer.builder.DeclarationsBuilderVisitor2
 import org.jetbrains.kotlin.descriptors.commonizer.builder.createGlobalBuilderComponents
 import org.jetbrains.kotlin.descriptors.commonizer.core.CommonizationVisitor
+import org.jetbrains.kotlin.descriptors.commonizer.mergedtree.CirNode.Companion.dimension
 import org.jetbrains.kotlin.descriptors.commonizer.mergedtree.CirTreeMerger
+import org.jetbrains.kotlin.descriptors.commonizer.metadata.MetadataBuilder
 import org.jetbrains.kotlin.storage.LockBasedStorageManager
 
 fun runCommonization(parameters: Parameters): Result {
@@ -33,6 +35,11 @@ fun runCommonization(parameters: Parameters): Result {
     checkpoint("COMMONIZED")
 
     // build resulting descriptors:
+    for (targetIndex in 0 until mergedTree.dimension) {
+        val (target, metadataModules) = MetadataBuilder.build(mergedTree, targetIndex)
+        parameters.progressLogger?.invoke("Metadata: Built modules for target [$target]")
+    }
+
     val components = mergedTree.createGlobalBuilderComponents(storageManager, parameters)
     mergedTree.accept(DeclarationsBuilderVisitor1(components), emptyList())
     mergedTree.accept(DeclarationsBuilderVisitor2(components), emptyList())
