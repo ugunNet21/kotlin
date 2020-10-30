@@ -42,6 +42,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.*
+import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.types.expressions.OperatorConventions
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -391,13 +392,26 @@ class RawFirBuilder(
             }
         }
 
-        private fun KtParameter.toFirValueParameter(defaultTypeRef: FirTypeRef? = null): FirValueParameter {
+        private fun KtParameter.toFirValueParameter(
+            defaultTypeRef: FirTypeRef? = null,
+            isCatchParameter: Boolean = false
+        ): FirValueParameter {
             val name = nameAsSafeName
             return buildValueParameter {
                 source = toFirSourceElement()
                 session = baseSession
                 origin = FirDeclarationOrigin.Source
+                val typeRefs = getStubOrPsiChildren(
+                    KtStubElementTypes.TYPE_REFERENCE,
+                    KtStubElementTypes.TYPE_REFERENCE.arrayFactory
+                )
                 returnTypeRef = when {
+                    isCatchParameter && typeRefs.isNotEmpty() -> {
+                        FirCatchType(
+                            typeRefs.map { it.toFirOrErrorType() }.toMutableList(),
+                            toFirSourceElement()
+                        )
+                    }
                     typeReference != null -> typeReference.toFirOrErrorType()
                     defaultTypeRef != null -> defaultTypeRef
                     else -> null.toFirOrImplicitType()
@@ -1531,7 +1545,8 @@ class RawFirBuilder(
                 tryBlock = expression.tryBlock.toFirBlock()
                 finallyBlock = expression.finallyBlock?.finalExpression?.toFirBlock()
                 for (clause in expression.catchClauses) {
-                    val parameter = clause.catchParameter?.toFirValueParameter() ?: continue
+                    val parameter = clause.catchParameter
+                        ?.toFirValueParameter(isCatchParameter = true) ?: continue
                     catches += buildCatch {
                         source = clause.toFirSourceElement()
                         this.parameter = parameter
