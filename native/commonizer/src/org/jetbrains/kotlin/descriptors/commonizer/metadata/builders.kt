@@ -297,10 +297,10 @@ private fun CirSimpleType.buildClassType(
     return KmType(typeFlags()).also { type ->
         type.classifier = KmClassifier.Class(classId.asString())
         arguments.mapTo(type.arguments) { it.buildArgument(context, expandTypeAliases) }
-        outerType?.let { outerType ->
-            val outerClassId = classId.outerClassId ?: error("Can't deduce outer class ID from $classId")
-            type.outerType = outerType.buildClassType(context, expandTypeAliases, outerClassId)
-        }
+//        outerType?.let { outerType ->
+//            val outerClassId = classId.outerClassId ?: error("Can't deduce outer class ID from $classId")
+//            type.outerType = outerType.buildClassType(context, expandTypeAliases, outerClassId)
+//        }
     }
 }
 
