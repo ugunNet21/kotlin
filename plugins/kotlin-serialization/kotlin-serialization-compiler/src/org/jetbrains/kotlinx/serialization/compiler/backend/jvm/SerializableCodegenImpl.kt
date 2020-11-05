@@ -17,7 +17,6 @@
 package org.jetbrains.kotlinx.serialization.compiler.backend.jvm
 
 import org.jetbrains.kotlin.codegen.*
-import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
@@ -31,23 +30,21 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.OtherOrigin
 import org.jetbrains.kotlinx.serialization.compiler.backend.common.*
-import org.jetbrains.kotlinx.serialization.compiler.diagnostic.VersionReader
 import org.jetbrains.kotlinx.serialization.compiler.diagnostic.serializableAnnotationIsUseless
 import org.jetbrains.kotlinx.serialization.compiler.resolve.*
+import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.ARRAY_MASK_FIELD_MISSING_FUNC_NAME
+import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.SINGLE_MASK_FIELD_MISSING_FUNC_NAME
+import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.initializedDescriptorFieldName
 import org.jetbrains.org.objectweb.asm.Label
 import org.jetbrains.org.objectweb.asm.Opcodes
 import org.jetbrains.org.objectweb.asm.Type
 import org.jetbrains.org.objectweb.asm.commons.InstructionAdapter
-
-val fieldMissingOptimizationVersion = ApiVersion.parse("1.1")!!
 
 class SerializableCodegenImpl(
     private val classCodegen: ImplementationBodyCodegen
 ) : SerializableCodegen(classCodegen.descriptor, classCodegen.bindingContext) {
 
     private val thisAsmType = classCodegen.typeMapper.mapClass(serializableDescriptor)
-    private val staticDescriptor = serializableDescriptor.declaredTypeParameters.isEmpty()
-    private val useFieldMissingOptimization = canUseFieldMissingOptimization()
 
     companion object {
         fun generateSerializableExtensions(codegen: ImplementationBodyCodegen) {
@@ -91,15 +88,6 @@ class SerializableCodegenImpl(
 
     override fun generateWriteSelfMethod(methodDescriptor: FunctionDescriptor) {
         classCodegen.generateMethod(methodDescriptor) { _, expr -> doGenerateWriteSelf(expr) }
-    }
-
-    private fun canUseFieldMissingOptimization(): Boolean {
-        val implementationVersion = VersionReader.getVersionsForCurrentModuleFromContext(
-            serializableDescriptor.module,
-            classCodegen.bindingContext
-        )?.implementationVersion
-
-        return if (implementationVersion != null) implementationVersion >= fieldMissingOptimizationVersion else false
     }
 
     private fun InstructionAdapter.doGenerateWriteSelf(exprCodegen: ExpressionCodegen) {
@@ -294,21 +282,14 @@ class SerializableCodegenImpl(
 
     private fun InstructionAdapter.generateOptimizedGoldenMaskCheck(maskVar: Int) {
         if (serializableDescriptor.isAbstractSerializableClass() || serializableDescriptor.isSealedSerializableClass()) {
-            //for abstract classes fields MUST BE checked in child classes
+            // for abstract classes fields MUST BE checked in child classes
             return
         }
 
         val allPresentsLabel = Label()
         val maskSlotCount = properties.serializableProperties.bitMaskSlotCount()
         if (maskSlotCount == 1) {
-            var goldenMask = 0
-            var requiredBit = 1
-            for (property in properties.serializableProperties) {
-                if (!property.optional) {
-                    goldenMask = goldenMask or requiredBit
-                }
-                requiredBit = requiredBit shl 1
-            }
+            val goldenMask = getGoldenMask()
 
             iconst(goldenMask)
             dup()
@@ -321,7 +302,10 @@ class SerializableCodegenImpl(
 
             stackSerialDescriptor()
             invokestatic(
-                pluginUtilsType.internalName, CallingConventions.throwMissingFieldException, "(II${descType.descriptor})V", false
+                pluginUtilsType.internalName,
+                SINGLE_MASK_FIELD_MISSING_FUNC_NAME.asString(),
+                "(II${descType.descriptor})V",
+                false
             )
         } else {
             val fieldsMissingLabel = Label()
@@ -329,7 +313,7 @@ class SerializableCodegenImpl(
             val goldenMaskList = getGoldenMaskList()
             goldenMaskList.forEachIndexed { i, goldenMask ->
                 val maskIndex = maskVar + i
-                //if( (goldenMask & seen) != goldenMask )
+                // if( (goldenMask & seen) != goldenMask )
                 iconst(goldenMask)
                 dup()
                 load(maskIndex, OPT_MASK_TYPE)
@@ -339,17 +323,20 @@ class SerializableCodegenImpl(
             goTo(allPresentsLabel)
 
             visitLabel(fieldsMissingLabel)
-            //prepare seen array
+            // prepare seen array
             fillArray(OPT_MASK_TYPE, goldenMaskList) { i, _ ->
                 load(maskVar + i, OPT_MASK_TYPE)
             }
-            //prepare golden mask array
+            // prepare golden mask array
             fillArray(OPT_MASK_TYPE, goldenMaskList) { _, goldenMask ->
                 iconst(goldenMask)
             }
             stackSerialDescriptor()
             invokestatic(
-                pluginUtilsType.internalName, CallingConventions.throwMissingFieldException, "([I[I${descType.descriptor})V", false
+                pluginUtilsType.internalName,
+                ARRAY_MASK_FIELD_MISSING_FUNC_NAME.asString(),
+                "([I[I${descType.descriptor})V",
+                false
             )
         }
         visitLabel(allPresentsLabel)
@@ -391,21 +378,6 @@ class SerializableCodegenImpl(
 
             putstatic(thisAsmType.internalName, initializedDescriptorFieldName, descType.descriptor)
         }
-    }
-
-    private fun getGoldenMaskList(): List<Int> {
-        val maskSlotCount = properties.serializableProperties.bitMaskSlotCount()
-        val goldenMaskList = MutableList(maskSlotCount) { 0 }
-
-        for (i in properties.serializableProperties.indices) {
-            if (!properties.serializableProperties[i].optional) {
-                val slotNumber = i / 32
-                val bitInSlot = i % 32
-                goldenMaskList[slotNumber] = goldenMaskList[slotNumber] or (1 shl bitInSlot)
-            }
-        }
-
-        return goldenMaskList
     }
 
     private fun ExpressionCodegen.genInitProperty(prop: SerializableProperty) = getProp(prop)?.let {
