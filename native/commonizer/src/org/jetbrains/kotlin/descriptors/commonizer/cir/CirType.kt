@@ -96,6 +96,13 @@ abstract class CirTypeAliasType : CirClassOrTypeAliasType() {
     }
 }
 
+tailrec fun computeExpandedType(underlyingType: CirClassOrTypeAliasType): CirClassType {
+    return when (underlyingType) {
+        is CirClassType -> underlyingType
+        is CirTypeAliasType -> computeExpandedType(underlyingType.underlyingType)
+    }
+}
+
 sealed class CirTypeProjection
 
 object CirStarTypeProjection : CirTypeProjection() {

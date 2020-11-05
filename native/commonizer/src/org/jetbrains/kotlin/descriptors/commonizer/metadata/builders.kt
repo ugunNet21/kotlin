@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.backend.common.serialization.metadata.DynamicTypeDes
 import org.jetbrains.kotlin.descriptors.commonizer.cir.*
 import org.jetbrains.kotlin.descriptors.commonizer.cir.impl.CirValueParameterImpl
 import org.jetbrains.kotlin.descriptors.commonizer.mergedtree.*
-import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.constants.*
@@ -199,7 +198,7 @@ private fun CirAnnotation.buildAnnotation(): KmAnnotation {
     }
 
     return KmAnnotation(
-        className = (type.classifierId as CirClassifierId.Class).classId.asString(),
+        className = type.classifierId.asString(),
         arguments = arguments
     )
 }
@@ -262,7 +261,10 @@ private fun List<CirTypeParameter>.buildTypeParameters(
 private fun CirType.buildType(
     context: VisitingContext,
     expandTypeAliases: Boolean = true
-) = when (this) {
+): KmType = when (this) {
+    is CirClassType -> buildType(context, expandTypeAliases)
+    is CirTypeAliasType -> buildType(context, expandTypeAliases)
+    is CirTypeParameterType -> buildType()
     is CirFlexibleType -> {
         lowerBound.buildType(context, expandTypeAliases).also {
             it.flexibleTypeUpperBound = KmFlexibleTypeUpperBound(
@@ -271,53 +273,37 @@ private fun CirType.buildType(
             )
         }
     }
-    is CirSimpleType -> buildType(context, expandTypeAliases)
 }
 
-private fun CirSimpleType.buildType(
+private fun CirTypeParameterType.buildType(): KmType =
+    KmType(typeFlags()).also { type ->
+        type.classifier = KmClassifier.TypeParameter(index)
+    }
+
+private fun CirClassType.buildType(
     context: VisitingContext,
     expandTypeAliases: Boolean
-) = when (val classifierId = classifierId) {
-    is CirClassifierId.Class -> buildClassType(context, expandTypeAliases, classifierId.classId)
-    is CirClassifierId.TypeAlias -> buildTypeAliasType(context, expandTypeAliases, classifierId.classId)
-    is CirClassifierId.TypeParameter -> buildTypeParameterType(classifierId.index)
-}
-
-private fun CirSimpleType.buildTypeParameterType(
-    index: Int
-): KmType = KmType(typeFlags()).also { type ->
-    type.classifier = KmClassifier.TypeParameter(index)
-}
-
-private fun CirSimpleType.buildClassType(
-    context: VisitingContext,
-    expandTypeAliases: Boolean,
-    classId: ClassId
 ): KmType {
     return KmType(typeFlags()).also { type ->
-        type.classifier = KmClassifier.Class(classId.asString())
+        type.classifier = KmClassifier.Class(classifierId.asString())
         arguments.mapTo(type.arguments) { it.buildArgument(context, expandTypeAliases) }
-//        outerType?.let { outerType ->
-//            val outerClassId = classId.outerClassId ?: error("Can't deduce outer class ID from $classId")
-//            type.outerType = outerType.buildClassType(context, expandTypeAliases, outerClassId)
-//        }
+        outerType?.let { type.outerType = it.buildType(context, expandTypeAliases) }
     }
 }
 
-private fun CirSimpleType.buildTypeAliasType(
+private fun CirTypeAliasType.buildType(
     context: VisitingContext,
-    expandTypeAliases: Boolean,
-    typeAliasId: ClassId
+    expandTypeAliases: Boolean
 ): KmType {
-    val cirExpandedType = (context.resolveClassifier(typeAliasId) as? CirTypeAlias)?.expandedType
-        ?: return buildClassType(context, expandTypeAliases, typeAliasId)
-
     val abbreviationType = KmType(typeFlags())
-    abbreviationType.classifier = KmClassifier.TypeAlias(typeAliasId.asString())
+    abbreviationType.classifier = KmClassifier.TypeAlias(classifierId.asString())
     arguments.mapTo(abbreviationType.arguments) { it.buildArgument(context, expandTypeAliases) }
 
     if (!expandTypeAliases)
         return abbreviationType
+
+    val cirExpandedType = computeExpandedType(underlyingType)
+    // TODO: expand type aliases
 
     val expandedType = cirExpandedType.buildType(context, expandTypeAliases = true)
     expandedType.abbreviatedType = abbreviationType
@@ -328,10 +314,9 @@ private fun CirSimpleType.buildTypeAliasType(
 private fun CirTypeProjection.buildArgument(
     context: VisitingContext,
     expandTypeAliases: Boolean
-) = if (isStarProjection) {
-    KmTypeProjection.STAR
-} else {
-    KmTypeProjection(
+) = when (this) {
+    CirStarTypeProjection -> KmTypeProjection.STAR
+    is CirTypeProjectionImpl -> KmTypeProjection(
         variance = projectionKind.buildVariance(),
         type = type.buildType(context, expandTypeAliases)
     )
