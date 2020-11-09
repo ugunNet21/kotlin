@@ -91,6 +91,9 @@ class Fir2IrTypeConverter(
                     else mutableListOf(builtIns.extensionFunctionTypeAnnotationConstructorCall())
                 // TODO: Need to convert @EnhancedNullability ?
                 typeAnnotations += with(annotationGenerator) { annotations.toIrAnnotations() }
+                if (hasEnhancedNullability) {
+                    typeAnnotations += builtIns.enhancedNullabilityAnnotationConstructorCall()
+                }
                 IrSimpleTypeImpl(
                     irSymbol, !typeContext.definitelyNotNull && this.isMarkedNullable,
                     fullyExpandedType(session).typeArguments.map { it.toIrTypeArgument(typeContext) },
