@@ -375,8 +375,8 @@ private val propertyLazyInitLoweringPhase = makeBodyLoweringPhase(
     description = "Make property init as lazy"
 )
 
-private val removeInititializersForLazyProperties = makeDeclarationTransformerPhase(
-    ::RemoveInititializersForLazyProperties,
+private val removeInitializersForLazyProperties = makeDeclarationTransformerPhase(
+    ::RemoveInitializersForLazyProperties,
     name = "NullizeDeclarations",
     description = "Make property init as lazy"
 )
@@ -757,7 +757,7 @@ val loweringList = listOf<Lowering>(
     forLoopsLoweringPhase,
     primitiveCompanionLoweringPhase,
     propertyLazyInitLoweringPhase,
-    removeInititializersForLazyProperties,
+    removeInitializersForLazyProperties,
     propertyAccessorInlinerLoweringPhase,
     foldConstantLoweringPhase,
     privateMembersLoweringPhase,
