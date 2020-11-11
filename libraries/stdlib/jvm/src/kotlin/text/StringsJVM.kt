@@ -691,7 +691,7 @@ public actual fun String.capitalizeFirst(): String {
 @OptIn(ExperimentalStdlibApi::class)
 @SinceKotlin("1.4")
 @WasExperimental(ExperimentalStdlibApi::class)
-@kotlin.internal.LowPriorityInOverloadResolution
+@kotlin.internal.LowPriorityInOverloadResolution // To avoid conflicts in function references, as this function was introduced later than common capitalize()
 public fun String.capitalize(locale: Locale): String {
     return capitalizeFirst(locale)
 }
@@ -750,7 +750,7 @@ public actual fun String.decapitalizeFirst(): String {
 @OptIn(ExperimentalStdlibApi::class)
 @SinceKotlin("1.4")
 @WasExperimental(ExperimentalStdlibApi::class)
-@kotlin.internal.LowPriorityInOverloadResolution
+@kotlin.internal.LowPriorityInOverloadResolution // To avoid conflicts in function references, as this function was introduced later than common decapitalize()
 public fun String.decapitalize(locale: Locale): String {
     return decapitalizeFirst(locale)
 }
