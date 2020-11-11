@@ -13,6 +13,13 @@ import org.jetbrains.kotlin.name.ClassId
 annotation class LookupTagInternals
 
 class ConeClassLikeLookupTagImpl(override val classId: ClassId) : ConeClassLikeLookupTag() {
+
+    init {
+        if (classId.isLocal) {
+            throw AssertionError("You should use ConeClassLookupTagWithFixedSymbol for local $classId!")
+        }
+    }
+
     @LookupTagInternals
     var boundSymbol: OneElementWeakMap<FirSession, FirClassLikeSymbol<*>?>? = null
 
