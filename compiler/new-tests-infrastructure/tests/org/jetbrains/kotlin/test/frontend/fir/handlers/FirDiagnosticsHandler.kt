@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnostic
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirPsiDiagnostic
 import org.jetbrains.kotlin.test.frontend.fir.FirSourceArtifact
 import org.jetbrains.kotlin.test.model.TestModule
+import org.jetbrains.kotlin.test.services.GlobalMetadataInfoHandler
 import org.jetbrains.kotlin.test.services.TestServices
 import org.jetbrains.kotlin.test.services.globalMetadataInfoHandler
 
@@ -41,8 +42,8 @@ class FirDiagnosticsHandler(testServices: TestServices) : FirAnalysisHandler(tes
 }
 
 private class FirDiagnosticCodeMetaRenderConfiguration(
-    val renderSeverity: Boolean = false
-) : AbstractCodeMetaInfoRenderConfiguration() {
+    val renderSeverity: Boolean = false,
+) : AbstractCodeMetaInfoRenderConfiguration(renderParams = false) {
     private val crossPlatformLineBreak = """\r?\n""".toRegex()
 
     override fun asString(codeMetaInfo: CodeMetaInfo): String {

@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.test.frontend.fir.handlers
 
 import org.jetbrains.kotlin.fir.render
+import org.jetbrains.kotlin.test.directives.DirectivesContainer
+import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives
 import org.jetbrains.kotlin.test.frontend.fir.FirSourceArtifact
 import org.jetbrains.kotlin.test.model.TestModule
 import org.jetbrains.kotlin.test.services.TestServices
@@ -18,16 +20,21 @@ class FirDumpHandler(
 ) : FirAnalysisHandler(testServices) {
     private val dumper: MultiModuleInfoDumper = MultiModuleInfoDumperImpl()
 
+    override val directivesContainers: List<DirectivesContainer>
+        get() = listOf(FirDiagnosticsDirectives)
+
     override fun processModule(module: TestModule, info: FirSourceArtifact) {
+        if (FirDiagnosticsDirectives.dumpFir !in module.directives) return
         val builderForModule = dumper.builderForModule(module)
         val firFiles = info.firFiles
         firFiles.values.forEach { builderForModule.append(it.render()) }
     }
 
     override fun processAfterAllModules() {
+        if (dumper.isEmpty()) return
         // TODO: change according to multiple testdata files
         val testDataFile = moduleStructure.originalTestDataFiles.first()
-        val expectedFile = testDataFile.parentFile.resolve("${testDataFile.nameWithoutFirExtension}.fir")
+        val expectedFile = testDataFile.parentFile.resolve("${testDataFile.nameWithoutFirExtension}.txt")
         val actualText = dumper.generateResultingDump()
         assertions.assertEqualsToFile("Content is not equal", expectedFile, actualText)
     }

@@ -207,7 +207,10 @@ private class ModuleStructureExtractorWorker constructor(
         )
         modules += testModule
         additionalSourceProviders.flatMapTo(filesOfCurrentModule) { additionalSourceProvider ->
-            additionalSourceProvider.produceAdditionalFiles(globalDirectives!!, testModule).also { additionalFiles ->
+            additionalSourceProvider.produceAdditionalFiles(
+                globalDirectives ?: RegisteredDirectives.Empty,
+                testModule
+            ).also { additionalFiles ->
                 require(additionalFiles.all { it.isAdditional }) {
                     "Files produced by ${additionalSourceProvider::class.qualifiedName} should have flag `isAdditional = true`"
                 }

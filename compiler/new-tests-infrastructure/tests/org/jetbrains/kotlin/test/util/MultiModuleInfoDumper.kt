@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.test.model.TestModule
 abstract class MultiModuleInfoDumper {
     abstract fun builderForModule(module: TestModule): StringBuilder
     abstract fun generateResultingDump(): String
+    abstract fun isEmpty(): Boolean
 }
 
 // TODO: consider about tests with multiple testdata files
@@ -28,5 +29,9 @@ class MultiModuleInfoDumperImpl : MultiModuleInfoDumper() {
                 append(builder)
             }
         }
+    }
+
+    override fun isEmpty(): Boolean {
+        return builderByModule.isEmpty()
     }
 }
