@@ -1,0 +1,241 @@
+FILE fqName:<root> fileName:/Mangler.kt
+  CLASS INTERFACE name:KotlinMangler modality:ABSTRACT visibility:public superTypes:[kotlin.Any]
+    $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.KotlinMangler<D of <root>.KotlinMangler>
+    TYPE_PARAMETER name:D index:0 variance: superTypes:[kotlin.Any]
+    PROPERTY name:hashMangle visibility:public modality:ABSTRACT [val]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-hashMangle> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<D of <root>.KotlinMangler>, $receiver:kotlin.String) returnType:kotlin.Long
+        correspondingProperty: PROPERTY name:hashMangle visibility:public modality:ABSTRACT [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.KotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY name:fqnString visibility:public modality:ABSTRACT [val]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-fqnString> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<D of <root>.KotlinMangler>, $receiver:D of <root>.KotlinMangler) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:fqnString visibility:public modality:ABSTRACT [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.KotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:D of <root>.KotlinMangler
+    PROPERTY name:fqnMangle visibility:public modality:OPEN [val]
+      FUN name:<get-fqnMangle> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<D of <root>.KotlinMangler>, $receiver:D of <root>.KotlinMangler) returnType:kotlin.Long
+        correspondingProperty: PROPERTY name:fqnMangle visibility:public modality:OPEN [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.KotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:D of <root>.KotlinMangler
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public open fun <get-fqnMangle> (): kotlin.Long declared in <root>.KotlinMangler'
+            CALL 'public abstract fun <get-hashMangle> (): kotlin.Long declared in <root>.KotlinMangler' type=kotlin.Long origin=GET_PROPERTY
+              $this: GET_VAR '<this>: <root>.KotlinMangler<D of <root>.KotlinMangler> declared in <root>.KotlinMangler.<get-fqnMangle>' type=<root>.KotlinMangler<D of <root>.KotlinMangler> origin=null
+              $receiver: CALL 'public abstract fun <get-fqnString> (): kotlin.String declared in <root>.KotlinMangler' type=kotlin.String origin=GET_PROPERTY
+                $this: GET_VAR '<this>: <root>.KotlinMangler<D of <root>.KotlinMangler> declared in <root>.KotlinMangler.<get-fqnMangle>' type=<root>.KotlinMangler<D of <root>.KotlinMangler> origin=null
+                $receiver: GET_VAR '<this>: D of <root>.KotlinMangler declared in <root>.KotlinMangler.<get-fqnMangle>' type=D of <root>.KotlinMangler origin=null
+    PROPERTY name:manglerName visibility:public modality:ABSTRACT [val]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-manglerName> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<D of <root>.KotlinMangler>) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:manglerName visibility:public modality:ABSTRACT [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.KotlinMangler>
+    CLASS INTERFACE name:IrMangler modality:ABSTRACT visibility:public superTypes:[<root>.KotlinMangler<kotlin.String>]
+      $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.KotlinMangler.IrMangler
+      PROPERTY name:manglerName visibility:public modality:OPEN [val]
+        FUN name:<get-manglerName> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler.IrMangler) returnType:kotlin.String
+          correspondingProperty: PROPERTY name:manglerName visibility:public modality:OPEN [val]
+          overridden:
+            public abstract fun <get-manglerName> (): kotlin.String declared in <root>.KotlinMangler
+          $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler.IrMangler
+          BLOCK_BODY
+            RETURN type=kotlin.Nothing from='public open fun <get-manglerName> (): kotlin.String declared in <root>.KotlinMangler.IrMangler'
+              CONST String type=kotlin.String value="Ir"
+      PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:ABSTRACT [fake_override,val]
+        FUN FAKE_OVERRIDE name:<get-fqnString> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.String [fake_override]
+          correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:ABSTRACT [fake_override,val]
+          overridden:
+            public abstract fun <get-fqnString> (): kotlin.String declared in <root>.KotlinMangler
+          $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+          $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+      PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:ABSTRACT [fake_override,val]
+        FUN FAKE_OVERRIDE name:<get-hashMangle> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+          correspondingProperty: PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:ABSTRACT [fake_override,val]
+          overridden:
+            public abstract fun <get-hashMangle> (): kotlin.Long declared in <root>.KotlinMangler
+          $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+          $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+      FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+        overridden:
+          public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+        VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+      FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+        overridden:
+          public open fun hashCode (): kotlin.Int [fake_override] declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+        overridden:
+          public open fun toString (): kotlin.String [fake_override] declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+        FUN FAKE_OVERRIDE name:<get-fqnMangle> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+          correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+          overridden:
+            public open fun <get-fqnMangle> (): kotlin.Long declared in <root>.KotlinMangler
+          $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+          $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [operator] declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+      overridden:
+        public open fun hashCode (): kotlin.Int declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+      overridden:
+        public open fun toString (): kotlin.String declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+  CLASS CLASS name:AbstractKotlinMangler modality:ABSTRACT visibility:public superTypes:[<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>]
+    $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.AbstractKotlinMangler<D of <root>.AbstractKotlinMangler>
+    TYPE_PARAMETER name:D index:0 variance: superTypes:[kotlin.Any]
+    CONSTRUCTOR visibility:public <> () returnType:<root>.AbstractKotlinMangler<D of <root>.AbstractKotlinMangler> [primary]
+      BLOCK_BODY
+        DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in kotlin.Any'
+        INSTANCE_INITIALIZER_CALL classDescriptor='CLASS CLASS name:AbstractKotlinMangler modality:ABSTRACT visibility:public superTypes:[<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>]'
+    PROPERTY name:hashMangle visibility:public modality:OPEN [val]
+      FUN name:<get-hashMangle> visibility:public modality:OPEN <> ($this:<root>.AbstractKotlinMangler<D of <root>.AbstractKotlinMangler>, $receiver:kotlin.String) returnType:kotlin.Long
+        correspondingProperty: PROPERTY name:hashMangle visibility:public modality:OPEN [val]
+        overridden:
+          public abstract fun <get-hashMangle> (): kotlin.Long declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.AbstractKotlinMangler<D of <root>.AbstractKotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public open fun <get-hashMangle> (): kotlin.Long declared in <root>.AbstractKotlinMangler'
+            CONST Long type=kotlin.Long value=42
+    PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:ABSTRACT [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-fqnString> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>, $receiver:D of <root>.AbstractKotlinMangler) returnType:kotlin.String [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:ABSTRACT [fake_override,val]
+        overridden:
+          public abstract fun <get-fqnString> (): kotlin.String declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:D of <root>.AbstractKotlinMangler
+    PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:ABSTRACT [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-manglerName> visibility:public modality:ABSTRACT <> ($this:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>) returnType:kotlin.String [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:ABSTRACT [fake_override,val]
+        overridden:
+          public abstract fun <get-manglerName> (): kotlin.String declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in <root>.KotlinMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+      overridden:
+        public open fun hashCode (): kotlin.Int [fake_override] declared in <root>.KotlinMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+      overridden:
+        public open fun toString (): kotlin.String [fake_override] declared in <root>.KotlinMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-fqnMangle> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>, $receiver:D of <root>.AbstractKotlinMangler) returnType:kotlin.Long [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-fqnMangle> (): kotlin.Long declared in <root>.KotlinMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<D of <root>.AbstractKotlinMangler>
+        $receiver: VALUE_PARAMETER name:<this> type:D of <root>.AbstractKotlinMangler
+  CLASS CLASS name:IrBasedKotlinManglerImpl modality:ABSTRACT visibility:public superTypes:[<root>.AbstractKotlinMangler<kotlin.String>; <root>.KotlinMangler.IrMangler]
+    $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.IrBasedKotlinManglerImpl
+    CONSTRUCTOR visibility:public <> () returnType:<root>.IrBasedKotlinManglerImpl [primary]
+      BLOCK_BODY
+        DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in <root>.AbstractKotlinMangler'
+          <D>: kotlin.String
+        INSTANCE_INITIALIZER_CALL classDescriptor='CLASS CLASS name:IrBasedKotlinManglerImpl modality:ABSTRACT visibility:public superTypes:[<root>.AbstractKotlinMangler<kotlin.String>; <root>.KotlinMangler.IrMangler]'
+    PROPERTY name:fqnString visibility:public modality:OPEN [val]
+      FUN name:<get-fqnString> visibility:public modality:OPEN <> ($this:<root>.IrBasedKotlinManglerImpl, $receiver:kotlin.String) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:fqnString visibility:public modality:OPEN [val]
+        overridden:
+          public abstract fun <get-fqnString> (): kotlin.String [fake_override] declared in <root>.AbstractKotlinMangler
+          public abstract fun <get-fqnString> (): kotlin.String [fake_override] declared in <root>.KotlinMangler.IrMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.IrBasedKotlinManglerImpl
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public open fun <get-fqnString> (): kotlin.String declared in <root>.IrBasedKotlinManglerImpl'
+            GET_VAR '<this>: kotlin.String declared in <root>.IrBasedKotlinManglerImpl.<get-fqnString>' type=kotlin.String origin=null
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in <root>.AbstractKotlinMangler
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in <root>.KotlinMangler.IrMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+      overridden:
+        public open fun hashCode (): kotlin.Int [fake_override] declared in <root>.AbstractKotlinMangler
+        public open fun hashCode (): kotlin.Int [fake_override] declared in <root>.KotlinMangler.IrMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+      overridden:
+        public open fun toString (): kotlin.String [fake_override] declared in <root>.AbstractKotlinMangler
+        public open fun toString (): kotlin.String [fake_override] declared in <root>.KotlinMangler.IrMangler
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-fqnMangle> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-fqnMangle> (): kotlin.Long [fake_override] declared in <root>.AbstractKotlinMangler
+          public open fun <get-fqnMangle> (): kotlin.Long [fake_override] declared in <root>.KotlinMangler.IrMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-hashMangle> visibility:public modality:OPEN <> ($this:<root>.AbstractKotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-hashMangle> (): kotlin.Long declared in <root>.AbstractKotlinMangler
+          public abstract fun <get-hashMangle> (): kotlin.Long [fake_override] declared in <root>.KotlinMangler.IrMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.AbstractKotlinMangler<kotlin.String>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-manglerName> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<kotlin.String>) returnType:kotlin.String [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public abstract fun <get-manglerName> (): kotlin.String [fake_override] declared in <root>.AbstractKotlinMangler
+          public open fun <get-manglerName> (): kotlin.String declared in <root>.KotlinMangler.IrMangler
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+  CLASS CLASS name:AbstractJvmManglerIr modality:ABSTRACT visibility:public superTypes:[<root>.IrBasedKotlinManglerImpl]
+    $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.AbstractJvmManglerIr
+    CONSTRUCTOR visibility:public <> () returnType:<root>.AbstractJvmManglerIr [primary]
+      BLOCK_BODY
+        DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in <root>.IrBasedKotlinManglerImpl'
+        INSTANCE_INITIALIZER_CALL classDescriptor='CLASS CLASS name:AbstractJvmManglerIr modality:ABSTRACT visibility:public superTypes:[<root>.IrBasedKotlinManglerImpl]'
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [fake_override,operator] declared in <root>.IrBasedKotlinManglerImpl
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+      overridden:
+        public open fun hashCode (): kotlin.Int [fake_override] declared in <root>.IrBasedKotlinManglerImpl
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.String [fake_override]
+      overridden:
+        public open fun toString (): kotlin.String [fake_override] declared in <root>.IrBasedKotlinManglerImpl
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+    PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-fqnMangle> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnMangle visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-fqnMangle> (): kotlin.Long [fake_override] declared in <root>.IrBasedKotlinManglerImpl
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-fqnString> visibility:public modality:OPEN <> ($this:<root>.IrBasedKotlinManglerImpl, $receiver:kotlin.String) returnType:kotlin.String [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:fqnString visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-fqnString> (): kotlin.String declared in <root>.IrBasedKotlinManglerImpl
+        $this: VALUE_PARAMETER name:<this> type:<root>.IrBasedKotlinManglerImpl
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-hashMangle> visibility:public modality:OPEN <> ($this:<root>.AbstractKotlinMangler<kotlin.String>, $receiver:kotlin.String) returnType:kotlin.Long [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:hashMangle visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-hashMangle> (): kotlin.Long [fake_override] declared in <root>.IrBasedKotlinManglerImpl
+        $this: VALUE_PARAMETER name:<this> type:<root>.AbstractKotlinMangler<kotlin.String>
+        $receiver: VALUE_PARAMETER name:<this> type:kotlin.String
+    PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:OPEN [fake_override,val]
+      FUN FAKE_OVERRIDE name:<get-manglerName> visibility:public modality:OPEN <> ($this:<root>.KotlinMangler<kotlin.String>) returnType:kotlin.String [fake_override]
+        correspondingProperty: PROPERTY FAKE_OVERRIDE name:manglerName visibility:public modality:OPEN [fake_override,val]
+        overridden:
+          public open fun <get-manglerName> (): kotlin.String [fake_override] declared in <root>.IrBasedKotlinManglerImpl
+        $this: VALUE_PARAMETER name:<this> type:<root>.KotlinMangler<kotlin.String>
