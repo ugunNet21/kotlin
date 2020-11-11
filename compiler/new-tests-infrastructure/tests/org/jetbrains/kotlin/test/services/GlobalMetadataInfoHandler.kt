@@ -58,6 +58,7 @@ class GlobalMetadataInfoHandler(
         val builder = StringBuilder()
         for (module in moduleStructure.modules) {
             for (file in module.files) {
+                if (file.isAdditional) continue
                 processors.forEach { it.processMetaInfos(module, file) }
                 val codeMetaInfos = infosPerFile.getValue(file)
                 CodeMetaInfoRenderer.renderTagsToText(

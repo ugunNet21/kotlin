@@ -14,9 +14,11 @@ import org.jetbrains.kotlin.test.model.TestFile
 
 data class FirSourceArtifact(
     val session: FirSession,
-    val firFiles: Map<TestFile, FirFile>,
+    val allFirFiles: Map<TestFile, FirFile>,
     val firAnalyzerFacade: FirAnalyzerFacade
 ) : ResultingArtifact.Source<FirSourceArtifact>() {
     override val frontendKind: FrontendKind.FIR
         get() = FrontendKind.FIR
+
+    val firFiles: Map<TestFile, FirFile> = allFirFiles.filterKeys { !it.isAdditional }
 }

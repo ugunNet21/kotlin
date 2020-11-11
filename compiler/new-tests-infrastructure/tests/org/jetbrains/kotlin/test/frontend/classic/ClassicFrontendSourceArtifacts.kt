@@ -16,11 +16,13 @@ import org.jetbrains.kotlin.test.model.ResultingArtifact
 import org.jetbrains.kotlin.test.model.TestFile
 
 data class ClassicFrontendSourceArtifacts(
-    val psiFiles: Map<TestFile, KtFile>,
+    val allPsiFiles: Map<TestFile, KtFile>,
     val analysisResult: AnalysisResult,
     val project: Project,
     val languageVersionSettings: LanguageVersionSettings
 ) : ResultingArtifact.Source<ClassicFrontendSourceArtifacts>() {
     override val frontendKind: FrontendKind.ClassicFrontend
         get() = FrontendKind.ClassicFrontend
+
+    val psiFiles: Map<TestFile, KtFile> = allPsiFiles.filterKeys { !it.isAdditional }
 }
