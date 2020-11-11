@@ -705,7 +705,6 @@ public fun String.capitalize(locale: Locale): String {
  */
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
-@kotlin.internal.LowPriorityInOverloadResolution
 public fun String.capitalizeFirst(locale: Locale): String {
     if (isNotEmpty()) {
         val firstChar = this[0]
@@ -762,7 +761,6 @@ public fun String.decapitalize(locale: Locale): String {
  */
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
-@kotlin.internal.LowPriorityInOverloadResolution
 public fun String.decapitalizeFirst(locale: Locale): String {
     return if (isNotEmpty() && !this[0].isLowerCase()) substring(0, 1).lowercase(locale) + substring(1) else this
 }
