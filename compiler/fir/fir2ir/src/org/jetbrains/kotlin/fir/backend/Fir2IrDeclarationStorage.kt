@@ -613,12 +613,12 @@ class Fir2IrDeclarationStorage(
                         )
                     )
                 }
+                enterScope(this)
                 if (propertyAccessor == null && isSetter) {
                     declareDefaultSetterParameter(
                         property.returnTypeRef.toIrType(ConversionTypeContext.DEFAULT.inSetter())
                     )
                 }
-                enterScope(this)
                 bindAndDeclareParameters(
                     propertyAccessor, irParent,
                     thisReceiverOwner, isStatic = irParent !is IrClass, parentPropertyReceiverType = property.receiverTypeRef
