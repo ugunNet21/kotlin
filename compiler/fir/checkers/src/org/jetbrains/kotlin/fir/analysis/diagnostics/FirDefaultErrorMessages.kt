@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.fir.analysis.diagnostics
 
 import org.jetbrains.kotlin.diagnostics.rendering.DefaultErrorMessages
 import org.jetbrains.kotlin.diagnostics.rendering.DiagnosticFactoryToRendererMap
-import org.jetbrains.kotlin.diagnostics.rendering.DiagnosticRenderer
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers.DECLARATION_NAME
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers.NULLABLE_STRING
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers.PROPERTY_NAME
@@ -128,8 +127,8 @@ class FirDefaultErrorMessages : DefaultErrorMessages.Extension {
     }
 
     companion object {
-        fun getRendererForDiagnostic(diagnostic: FirDiagnostic<*>): DiagnosticRenderer<*>? {
-            return MAP[diagnostic.factory] ?: diagnostic.factory.psiDiagnosticFactory.defaultRenderer
+        fun getRendererForDiagnostic(diagnostic: FirDiagnostic<*>): FirDiagnosticRenderer<*>? {
+            return MAP[diagnostic.factory]
         }
 
         // * - The old FE reports these diagnostics with additional parameters
