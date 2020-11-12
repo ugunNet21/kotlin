@@ -10,7 +10,10 @@ dependencies {
     testImplementation(project(":compiler:cli"))
     testImplementation(projectTests(":compiler:tests-common"))
     testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
-    testImplementation(project(":kotlin-reflect"))
+
+    testCompileOnly(project(":kotlin-reflect-api"))
+    testRuntimeOnly(project(":kotlin-reflect"))
+    testRuntimeOnly(project(":core:descriptors.runtime"))
 
     testImplementation(projectTests(":generators:test-generator"))
     testImplementation(projectTests(":compiler:new-tests-infrastructure:new-test-generator"))
