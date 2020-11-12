@@ -1772,6 +1772,11 @@ public class Fir2IrTextTestGenerated extends AbstractFir2IrTextTest {
             runTest("compiler/testData/ir/irText/firProblems/coercionToUnitForNestedWhen.kt");
         }
 
+        @TestMetadata("ControlFlowInfo.kt")
+        public void testControlFlowInfo() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/ControlFlowInfo.kt");
+        }
+
         @TestMetadata("DeepCopyIrTree.kt")
         public void testDeepCopyIrTree() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/DeepCopyIrTree.kt");

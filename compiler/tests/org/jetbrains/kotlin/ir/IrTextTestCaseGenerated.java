@@ -1771,6 +1771,11 @@ public class IrTextTestCaseGenerated extends AbstractIrTextTestCase {
             runTest("compiler/testData/ir/irText/firProblems/coercionToUnitForNestedWhen.kt");
         }
 
+        @TestMetadata("ControlFlowInfo.kt")
+        public void testControlFlowInfo() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/ControlFlowInfo.kt");
+        }
+
         @TestMetadata("DeepCopyIrTree.kt")
         public void testDeepCopyIrTree() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/DeepCopyIrTree.kt");
