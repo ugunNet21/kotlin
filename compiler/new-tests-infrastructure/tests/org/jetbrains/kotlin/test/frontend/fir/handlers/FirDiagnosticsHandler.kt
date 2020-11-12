@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneTypeSafe
 import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
 import org.jetbrains.kotlin.name.FqNameUnsafe
+import org.jetbrains.kotlin.resolve.AnalyzingUtils
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives
 import org.jetbrains.kotlin.test.directives.DirectivesContainer
 import org.jetbrains.kotlin.test.frontend.fir.FirSourceArtifact
@@ -62,6 +63,7 @@ class FirDiagnosticsHandler(testServices: TestServices) : FirAnalysisHandler(tes
                 diagnostic.toMetaInfo(file)
             }
             globalMetadataInfoHandler.addMetadataInfosForFile(file, diagnosticsMetadataInfos)
+            collectSyntaxDiagnostics(file, firFile)
             collectDebugInfoDiagnostics(file, firFile)
         }
     }
@@ -74,6 +76,15 @@ class FirDiagnosticsHandler(testServices: TestServices) : FirAnalysisHandler(tes
             metaInfo.replaceRenderConfiguration(FirMetaInfoUtils.renderDiagnosticWithArgs)
         }
         return metaInfo
+    }
+
+    private fun collectSyntaxDiagnostics(testFile: TestFile, firFile: FirFile) {
+        // TODO: support in light tree
+        val psiFile = firFile.psi ?: return
+        val metaInfos = AnalyzingUtils.getSyntaxErrorRanges(psiFile).map {
+            FirErrors.SYNTAX.on(FirRealPsiSourceElement(it)).toMetaInfo(testFile)
+        }
+        globalMetadataInfoHandler.addMetadataInfosForFile(testFile, metaInfos)
     }
 
     private fun collectDebugInfoDiagnostics(
