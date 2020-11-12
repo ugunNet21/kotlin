@@ -86,7 +86,7 @@ class TestRunner(private val testConfiguration: TestConfiguration) {
             globalMetadataInfoHandler.compareAllMetaDataInfos()
         }
         if (failedException != null) {
-            failedAssertions += AssertionError("Exception was thrown", failedException)
+            failedAssertions.add(0, AssertionError("Exception was thrown", failedException))
         }
 
         services.assertions.assertAll(failedAssertions)
