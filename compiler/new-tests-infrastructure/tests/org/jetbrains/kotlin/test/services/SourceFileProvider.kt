@@ -47,6 +47,7 @@ class SourceFileProviderImpl(val preprocessors: List<SourceFilePreprocessor>) : 
                 else -> error("Unknown file type: ${testFile.name}")
             }
             directory.resolve(testFile.name).also {
+                it.parentFile.mkdirs()
                 it.writeText(getContentOfSourceFile(testFile))
             }
         }
