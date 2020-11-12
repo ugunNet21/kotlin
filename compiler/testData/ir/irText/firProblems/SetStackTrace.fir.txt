@@ -1,0 +1,16 @@
+FILE fqName:<root> fileName:/SetStackTrace.kt
+  FUN name:foo visibility:public modality:FINAL <> (cause:kotlin.Throwable?) returnType:kotlin.Unit
+    VALUE_PARAMETER name:cause index:0 type:kotlin.Throwable?
+    BLOCK_BODY
+      WHEN type=kotlin.Unit origin=IF
+        BRANCH
+          if: CALL 'public final fun not (): kotlin.Boolean [operator] declared in kotlin.Boolean' type=kotlin.Boolean origin=EXCLEQ
+            $this: CALL 'public final fun EQEQ (arg0: kotlin.Any?, arg1: kotlin.Any?): kotlin.Boolean declared in kotlin.internal.ir' type=kotlin.Boolean origin=EXCLEQ
+              arg0: GET_VAR 'cause: kotlin.Throwable? declared in <root>.foo' type=kotlin.Throwable? origin=null
+              arg1: CONST Null type=kotlin.Nothing? value=null
+          then: BLOCK type=kotlin.Unit origin=null
+            ERROR_CALL 'Unresolved reference: <Unresolved name: stackTrace>#' type=IrErrorType
+  FUN name:bar visibility:public modality:FINAL <> (cause:kotlin.Throwable) returnType:kotlin.Unit
+    VALUE_PARAMETER name:cause index:0 type:kotlin.Throwable
+    BLOCK_BODY
+      ERROR_CALL 'Unresolved reference: <Unresolved name: stackTrace>#' type=IrErrorType

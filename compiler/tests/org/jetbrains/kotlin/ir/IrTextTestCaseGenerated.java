@@ -1811,6 +1811,11 @@ public class IrTextTestCaseGenerated extends AbstractIrTextTestCase {
             runTest("compiler/testData/ir/irText/firProblems/SameJavaFieldReferences.kt");
         }
 
+        @TestMetadata("SetStackTrace.kt")
+        public void testSetStackTrace() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/SetStackTrace.kt");
+        }
+
         @TestMetadata("SignatureClash.kt")
         public void testSignatureClash() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/SignatureClash.kt");
