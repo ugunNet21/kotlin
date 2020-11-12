@@ -74,9 +74,7 @@ class FirDiagnosticCodeMetaRenderConfiguration(
         val diagnostic = codeMetaInfo.diagnostic
 
         val renderer = FirDefaultErrorMessages.getRendererForDiagnostic(diagnostic)
-        if (renderer != null) {
-            params.add(renderer.render(diagnostic))
-        }
+        params.add(renderer.render(diagnostic))
 
         if (renderSeverity)
             params.add("severity='${diagnostic.severity}'")
