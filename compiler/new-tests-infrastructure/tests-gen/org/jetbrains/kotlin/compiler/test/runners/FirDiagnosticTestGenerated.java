@@ -2079,6 +2079,34 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
     }
 
     @Nested
+    @TestMetadata("compiler/fir/analysis-tests/testData/resolve/innerClasses")
+    @TestDataPath("$PROJECT_ROOT")
+    public class InnerClasses extends AbstractFirDiagnosticTest {
+        @Test
+        public void testAllFilesPresentInInnerClasses() throws Exception {
+            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/resolve/innerClasses"), Pattern.compile("^(.*)\\.kts?$"), Pattern.compile("^(.+)\\.fir\\.kts?$"), true);
+        }
+
+        @Test
+        @TestMetadata("inner.kt")
+        public void testInner() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolve/innerClasses/inner.kt");
+        }
+
+        @Test
+        @TestMetadata("innerTypes.kt")
+        public void testInnerTypes() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolve/innerClasses/innerTypes.kt");
+        }
+
+        @Test
+        @TestMetadata("simple.kt")
+        public void testSimple() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolve/innerClasses/simple.kt");
+        }
+    }
+
+    @Nested
     @TestMetadata("compiler/fir/analysis-tests/testData/resolve/localClasses")
     @TestDataPath("$PROJECT_ROOT")
     public class LocalClasses extends AbstractFirDiagnosticTest {
