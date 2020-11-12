@@ -33,6 +33,7 @@ class TestConfigurationImpl(
     environmentConfigurators: List<Constructor<EnvironmentConfigurator>>,
 
     additionalSourceProviders: List<Constructor<AdditionalSourceProvider>>,
+    metaTestConfigurators: List<Constructor<MetaTestConfigurator>>,
 
     directives: List<DirectivesContainer>,
     override val defaultRegisteredDirectives: RegisteredDirectives
@@ -55,6 +56,12 @@ class TestConfigurationImpl(
             it.flatMapTo(allDirectives) { provider -> provider.directives }
         }
     )
+
+    override val metaTestConfigurators: List<MetaTestConfigurator> = metaTestConfigurators.map {
+        it.invoke(testServices).also { configurator ->
+            allDirectives += configurator.directives
+        }
+    }
 
     init {
         allDirectives += defaultDirectiveContainers

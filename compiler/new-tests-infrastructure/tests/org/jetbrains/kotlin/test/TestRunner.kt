@@ -6,18 +6,20 @@
 package org.jetbrains.kotlin.test
 
 import com.intellij.testFramework.TestDataFile
-import org.jetbrains.kotlin.test.impl.ModuleStructureExtractor
 import org.jetbrains.kotlin.test.model.*
-import org.jetbrains.kotlin.test.services.DependencyProviderImpl
-import org.jetbrains.kotlin.test.services.assertions
-import org.jetbrains.kotlin.test.services.globalMetadataInfoHandler
-import org.jetbrains.kotlin.test.services.registerDependencyProvider
+import org.jetbrains.kotlin.test.services.*
 
 class TestRunner(private val testConfiguration: TestConfiguration) {
     private val failedAssertions = mutableListOf<AssertionError>()
 
     fun runTest(@TestDataFile testDataFileName: String) {
         val services = testConfiguration.testServices
+
+        @Suppress("NAME_SHADOWING")
+        val testDataFileName = testConfiguration.metaTestConfigurators.fold(testDataFileName) { fileName, configurator ->
+            configurator.transformTestDataPath(fileName)
+        }
+
         val moduleStructure = testConfiguration.moduleStructureExtractor.splitTestDataByModules(
             testDataFileName,
             testConfiguration.directives,
@@ -89,7 +91,12 @@ class TestRunner(private val testConfiguration: TestConfiguration) {
             failedAssertions.add(0, AssertionError("Exception was thrown", failedException))
         }
 
-        services.assertions.assertAll(failedAssertions)
+        val filteredFailedAssertions = testConfiguration.metaTestConfigurators
+            .fold<MetaTestConfigurator, List<AssertionError>>(failedAssertions) { assertions, configurator ->
+                configurator.suppressErrors(assertions)
+            }
+
+        services.assertions.assertAll(filteredFailedAssertions)
     }
 
     private inline fun withAssertionCatching(block: () -> Unit) {

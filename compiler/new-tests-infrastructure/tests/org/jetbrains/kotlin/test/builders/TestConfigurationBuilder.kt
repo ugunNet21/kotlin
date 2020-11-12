@@ -32,6 +32,8 @@ class TestConfigurationBuilder {
 
     private val additionalSourceProviders: MutableList<Constructor<AdditionalSourceProvider>> = mutableListOf()
 
+    private val metaTestConfigurators: MutableList<Constructor<MetaTestConfigurator>> = mutableListOf()
+
     private val directives: MutableList<DirectivesContainer> = mutableListOf()
     val defaultRegisteredDirectivesBuilder: RegisteredDirectivesBuilder = RegisteredDirectivesBuilder()
 
@@ -83,6 +85,10 @@ class TestConfigurationBuilder {
         additionalSourceProviders += providers
     }
 
+    fun useMetaTestConfigurators(vararg configurators: Constructor<MetaTestConfigurator>) {
+        metaTestConfigurators += configurators
+    }
+
     inline fun defaultDirectives(init: RegisteredDirectivesBuilder.() -> Unit) {
         defaultRegisteredDirectivesBuilder.apply(init)
     }
@@ -101,6 +107,7 @@ class TestConfigurationBuilder {
             additionalMetaInfoProcessors,
             environmentConfigurators,
             additionalSourceProviders,
+            metaTestConfigurators,
             directives,
             defaultRegisteredDirectivesBuilder.build()
         )
