@@ -11,10 +11,16 @@ import java.text.MessageFormat
 sealed class FirDiagnosticRenderer<D : FirDiagnostic<*>> {
     abstract fun render(diagnostic: D): String
 
+    @JvmName("unsafeRender")
+    @Suppress("UNCHECKED_CAST")
+    fun render(diagnostic: FirDiagnostic<*>): String {
+        return render(diagnostic as D)
+    }
+
     abstract fun toClassicDiagnosticRenderer(): DiagnosticRenderer<*>
 }
 
-class SimpleFirDiagnosticRenderer(private val message: String) : FirDiagnosticRenderer<FirSimpleDiagnostic<*>>() {
+class SimpleFirDiagnosticRenderer(val message: String) : FirDiagnosticRenderer<FirSimpleDiagnostic<*>>() {
     override fun render(diagnostic: FirSimpleDiagnostic<*>): String {
         return message
     }
