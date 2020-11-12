@@ -1219,6 +1219,11 @@ public class FirDiagnosticsWithStdlibTestGenerated extends AbstractFirDiagnostic
             runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/KJKComplexHierarchyNestedLoop.kt");
         }
 
+        @TestMetadata("nullableAmbiguousAssignment.kt")
+        public void testNullableAmbiguousAssignment() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/nullableAmbiguousAssignment.kt");
+        }
+
         @TestMetadata("qualifierPriority.kt")
         public void testQualifierPriority() throws Exception {
             runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/qualifierPriority.kt");
