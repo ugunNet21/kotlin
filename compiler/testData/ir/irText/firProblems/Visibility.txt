@@ -1,0 +1,80 @@
+FILE fqName:<root> fileName:/Visibility.kt
+  CLASS CLASS name:Visibility modality:ABSTRACT visibility:public superTypes:[kotlin.Any]
+    $this: VALUE_PARAMETER INSTANCE_RECEIVER name:<this> type:<root>.Visibility
+    CONSTRUCTOR visibility:protected <> (name:kotlin.String, isPublicAPI:kotlin.Boolean) returnType:<root>.Visibility [primary]
+      VALUE_PARAMETER name:name index:0 type:kotlin.String
+      VALUE_PARAMETER name:isPublicAPI index:1 type:kotlin.Boolean
+      BLOCK_BODY
+        DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () [primary] declared in kotlin.Any'
+        INSTANCE_INITIALIZER_CALL classDescriptor='CLASS CLASS name:Visibility modality:ABSTRACT visibility:public superTypes:[kotlin.Any]'
+    PROPERTY name:name visibility:public modality:FINAL [val]
+      FIELD PROPERTY_BACKING_FIELD name:name type:kotlin.String visibility:private [final]
+        EXPRESSION_BODY
+          GET_VAR 'name: kotlin.String declared in <root>.Visibility.<init>' type=kotlin.String origin=INITIALIZE_PROPERTY_FROM_PARAMETER
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-name> visibility:public modality:FINAL <> ($this:<root>.Visibility) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:name visibility:public modality:FINAL [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public final fun <get-name> (): kotlin.String declared in <root>.Visibility'
+            GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:name type:kotlin.String visibility:private [final]' type=kotlin.String origin=null
+              receiver: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.<get-name>' type=<root>.Visibility origin=null
+    PROPERTY name:isPublicAPI visibility:public modality:FINAL [val]
+      FIELD PROPERTY_BACKING_FIELD name:isPublicAPI type:kotlin.Boolean visibility:private [final]
+        EXPRESSION_BODY
+          GET_VAR 'isPublicAPI: kotlin.Boolean declared in <root>.Visibility.<init>' type=kotlin.Boolean origin=INITIALIZE_PROPERTY_FROM_PARAMETER
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-isPublicAPI> visibility:public modality:FINAL <> ($this:<root>.Visibility) returnType:kotlin.Boolean
+        correspondingProperty: PROPERTY name:isPublicAPI visibility:public modality:FINAL [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public final fun <get-isPublicAPI> (): kotlin.Boolean declared in <root>.Visibility'
+            GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:isPublicAPI type:kotlin.Boolean visibility:private [final]' type=kotlin.Boolean origin=null
+              receiver: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.<get-isPublicAPI>' type=<root>.Visibility origin=null
+    PROPERTY name:internalDisplayName visibility:public modality:OPEN [val]
+      FUN name:<get-internalDisplayName> visibility:public modality:OPEN <> ($this:<root>.Visibility) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:internalDisplayName visibility:public modality:OPEN [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public open fun <get-internalDisplayName> (): kotlin.String declared in <root>.Visibility'
+            CALL 'public final fun <get-name> (): kotlin.String declared in <root>.Visibility' type=kotlin.String origin=GET_PROPERTY
+              $this: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.<get-internalDisplayName>' type=<root>.Visibility origin=null
+    PROPERTY name:externalDisplayName visibility:public modality:OPEN [val]
+      FUN name:<get-externalDisplayName> visibility:public modality:OPEN <> ($this:<root>.Visibility) returnType:kotlin.String
+        correspondingProperty: PROPERTY name:externalDisplayName visibility:public modality:OPEN [val]
+        $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='public open fun <get-externalDisplayName> (): kotlin.String declared in <root>.Visibility'
+            CALL 'public open fun <get-internalDisplayName> (): kotlin.String declared in <root>.Visibility' type=kotlin.String origin=GET_PROPERTY
+              $this: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.<get-externalDisplayName>' type=<root>.Visibility origin=null
+    FUN name:mustCheckInImports visibility:public modality:ABSTRACT <> ($this:<root>.Visibility) returnType:kotlin.Boolean
+      $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+    FUN name:compareTo visibility:public modality:OPEN <> ($this:<root>.Visibility, visibility:<root>.Visibility) returnType:kotlin.Int?
+      $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+      VALUE_PARAMETER name:visibility index:0 type:<root>.Visibility
+      BLOCK_BODY
+        RETURN type=kotlin.Nothing from='public open fun compareTo (visibility: <root>.Visibility): kotlin.Int? declared in <root>.Visibility'
+          CALL 'internal final fun compareLocal (first: <root>.Visibility, second: <root>.Visibility): kotlin.Int? declared in <root>.Visibilities' type=kotlin.Int? origin=null
+            $this: GET_OBJECT 'CLASS OBJECT name:Visibilities modality:FINAL visibility:public superTypes:[kotlin.Any]' type=<root>.Visibilities
+            first: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.compareTo' type=<root>.Visibility origin=null
+            second: GET_VAR 'visibility: <root>.Visibility declared in <root>.Visibility.compareTo' type=<root>.Visibility origin=null
+    FUN name:toString visibility:public modality:FINAL <> ($this:<root>.Visibility) returnType:kotlin.String
+      overridden:
+        public open fun toString (): kotlin.String declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+      BLOCK_BODY
+        RETURN type=kotlin.Nothing from='public final fun toString (): kotlin.String declared in <root>.Visibility'
+          CALL 'public open fun <get-internalDisplayName> (): kotlin.String declared in <root>.Visibility' type=kotlin.String origin=GET_PROPERTY
+            $this: GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.toString' type=<root>.Visibility origin=null
+    FUN name:normalize visibility:public modality:OPEN <> ($this:<root>.Visibility) returnType:<root>.Visibility
+      $this: VALUE_PARAMETER name:<this> type:<root>.Visibility
+      BLOCK_BODY
+        RETURN type=kotlin.Nothing from='public open fun normalize (): <root>.Visibility declared in <root>.Visibility'
+          GET_VAR '<this>: <root>.Visibility declared in <root>.Visibility.normalize' type=<root>.Visibility origin=null
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN <> ($this:kotlin.Any, other:kotlin.Any?) returnType:kotlin.Boolean [fake_override,operator]
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean [operator] declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any
+      VALUE_PARAMETER name:other index:0 type:kotlin.Any?
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN <> ($this:kotlin.Any) returnType:kotlin.Int [fake_override]
+      overridden:
+        public open fun hashCode (): kotlin.Int declared in kotlin.Any
+      $this: VALUE_PARAMETER name:<this> type:kotlin.Any

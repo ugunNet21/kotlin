@@ -1831,6 +1831,11 @@ public class Fir2IrTextTestGenerated extends AbstractFir2IrTextTest {
         public void testVarInInit() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/VarInInit.kt");
         }
+
+        @TestMetadata("Visibilities.kt")
+        public void testVisibilities() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/Visibilities.kt");
+        }
     }
 
     @TestMetadata("compiler/testData/ir/irText/lambdas")

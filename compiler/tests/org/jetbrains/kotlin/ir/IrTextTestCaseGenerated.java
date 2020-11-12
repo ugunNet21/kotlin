@@ -1830,6 +1830,11 @@ public class IrTextTestCaseGenerated extends AbstractIrTextTestCase {
         public void testVarInInit() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/VarInInit.kt");
         }
+
+        @TestMetadata("Visibilities.kt")
+        public void testVisibilities() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/Visibilities.kt");
+        }
     }
 
     @TestMetadata("compiler/testData/ir/irText/lambdas")
