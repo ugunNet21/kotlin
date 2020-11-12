@@ -1,0 +1,210 @@
+FILE: Visibility.kt
+    public abstract class Visibility : R|kotlin/Any| {
+        protected constructor(name: R|kotlin/String|, isPublicAPI: R|kotlin/Boolean|): R|Visibility| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final val name: R|kotlin/String| = R|<local>/name|
+            public get(): R|kotlin/String|
+
+        public final val isPublicAPI: R|kotlin/Boolean| = R|<local>/isPublicAPI|
+            public get(): R|kotlin/Boolean|
+
+        public open val internalDisplayName: R|kotlin/String|
+            public get(): R|kotlin/String| {
+                ^ this@R|/Visibility|.R|/Visibility.name|
+            }
+
+        public open val externalDisplayName: R|kotlin/String|
+            public get(): R|kotlin/String| {
+                ^ this@R|/Visibility|.R|/Visibility.internalDisplayName|
+            }
+
+        public abstract fun mustCheckInImports(): R|kotlin/Boolean|
+
+        public open fun compareTo(visibility: R|Visibility|): R|kotlin/Int?| {
+            ^compareTo Q|Visibilities|.R|/Visibilities.compareLocal|(this@R|/Visibility|, R|<local>/visibility|)
+        }
+
+        public final override fun toString(): R|kotlin/String| {
+            ^toString this@R|/Visibility|.R|/Visibility.internalDisplayName|
+        }
+
+        public open fun normalize(): R|Visibility| {
+            ^normalize this@R|/Visibility|
+        }
+
+    }
+FILE: Visibilities.kt
+    public final object Visibilities : R|kotlin/Any| {
+        private constructor(): R|Visibilities| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final object Private : R|Visibility| {
+            private constructor(): R|Visibilities.Private| {
+                super<R|Visibility|>(String(private), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(true)
+            }
+
+        }
+
+        public final object PrivateToThis : R|Visibility| {
+            private constructor(): R|Visibilities.PrivateToThis| {
+                super<R|Visibility|>(String(private_to_this), isPublicAPI = Boolean(false))
+            }
+
+            public final override val internalDisplayName: R|kotlin/String|
+                public get(): R|kotlin/String| {
+                    ^ String(private/*private to this*/)
+                }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(true)
+            }
+
+        }
+
+        public final object Protected : R|Visibility| {
+            private constructor(): R|Visibilities.Protected| {
+                super<R|Visibility|>(String(protected), isPublicAPI = Boolean(true))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(false)
+            }
+
+        }
+
+        public final object Internal : R|Visibility| {
+            private constructor(): R|Visibilities.Internal| {
+                super<R|Visibility|>(String(internal), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(true)
+            }
+
+        }
+
+        public final object Public : R|Visibility| {
+            private constructor(): R|Visibilities.Public| {
+                super<R|Visibility|>(String(public), isPublicAPI = Boolean(true))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(false)
+            }
+
+        }
+
+        public final object Local : R|Visibility| {
+            private constructor(): R|Visibilities.Local| {
+                super<R|Visibility|>(String(local), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(true)
+            }
+
+        }
+
+        public final object Inherited : R|Visibility| {
+            private constructor(): R|Visibilities.Inherited| {
+                super<R|Visibility|>(String(inherited), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                throw R|java/lang/IllegalStateException.IllegalStateException|(String(This method shouldn't be invoked for INHERITED visibility))
+            }
+
+        }
+
+        public final object InvisibleFake : R|Visibility| {
+            private constructor(): R|Visibilities.InvisibleFake| {
+                super<R|Visibility|>(String(invisible_fake), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                ^mustCheckInImports Boolean(true)
+            }
+
+            public final override val externalDisplayName: R|kotlin/String|
+                public get(): R|kotlin/String| {
+                    ^ String(invisible (private in a supertype))
+                }
+
+        }
+
+        public final object Unknown : R|Visibility| {
+            private constructor(): R|Visibilities.Unknown| {
+                super<R|Visibility|>(String(unknown), isPublicAPI = Boolean(false))
+            }
+
+            public final override fun mustCheckInImports(): R|kotlin/Boolean| {
+                throw R|java/lang/IllegalStateException.IllegalStateException|(String(This method shouldn't be invoked for UNKNOWN visibility))
+            }
+
+        }
+
+        private final val ORDERED_VISIBILITIES: R|kotlin/collections/Map<Visibility, kotlin/Int>| = R|kotlin/collections/buildMap|<R|Visibility|, R|kotlin/Int|>(<L> = buildMap@fun R|kotlin/collections/MutableMap<Visibility, kotlin/Int>|.<anonymous>(): R|kotlin/Unit| <kind=EXACTLY_ONCE>  {
+            this@R|special/anonymous|.R|SubstitutionOverride<kotlin/collections/MutableMap.put: R|Stub: TypeVariable(V)?|>|(Q|Visibilities.PrivateToThis|, Int(0))
+            this@R|special/anonymous|.R|SubstitutionOverride<kotlin/collections/MutableMap.put: R|Stub: TypeVariable(V)?|>|(Q|Visibilities.Private|, Int(0))
+            this@R|special/anonymous|.R|SubstitutionOverride<kotlin/collections/MutableMap.put: R|Stub: TypeVariable(V)?|>|(Q|Visibilities.Internal|, Int(1))
+            this@R|special/anonymous|.R|SubstitutionOverride<kotlin/collections/MutableMap.put: R|Stub: TypeVariable(V)?|>|(Q|Visibilities.Protected|, Int(1))
+            ^ this@R|special/anonymous|.R|SubstitutionOverride<kotlin/collections/MutableMap.put: R|Stub: TypeVariable(V)?|>|(Q|Visibilities.Public|, Int(2))
+        }
+        )
+            private get(): R|kotlin/collections/Map<Visibility, kotlin/Int>|
+
+        public final fun compare(first: R|Visibility|, second: R|Visibility|): R|kotlin/Int?| {
+            lval result: R|kotlin/Int?| = R|<local>/first|.R|/Visibility.compareTo|(R|<local>/second|)
+            when () {
+                !=(R|<local>/result|, Null(null)) ->  {
+                    ^compare R|<local>/result|
+                }
+            }
+
+            lval oppositeResult: R|kotlin/Int?| = R|<local>/second|.R|/Visibility.compareTo|(R|<local>/first|)
+            ^compare when () {
+                !=(R|<local>/oppositeResult|, Null(null)) ->  {
+                    R|<local>/oppositeResult|.R|kotlin/Int.unaryMinus|()
+                }
+                else ->  {
+                    Null(null)
+                }
+            }
+
+        }
+
+        internal final fun compareLocal(first: R|Visibility|, second: R|Visibility|): R|kotlin/Int?| {
+            when () {
+                ===(R|<local>/first|, R|<local>/second|) ->  {
+                    ^compareLocal Int(0)
+                }
+            }
+
+            lval firstIndex: R|kotlin/Int?| = this@R|/Visibilities|.R|/Visibilities.ORDERED_VISIBILITIES|.R|SubstitutionOverride<kotlin/collections/Map.get: R|kotlin/Int?|>|(R|<local>/first|)
+            lval secondIndex: R|kotlin/Int?| = this@R|/Visibilities|.R|/Visibilities.ORDERED_VISIBILITIES|.R|SubstitutionOverride<kotlin/collections/Map.get: R|kotlin/Int?|>|(R|<local>/second|)
+            ^compareLocal when () {
+                ==(R|<local>/firstIndex|, Null(null)) || ==(R|<local>/secondIndex|, Null(null)) || ==(R|<local>/firstIndex|, R|<local>/secondIndex|) ->  {
+                    Null(null)
+                }
+                else ->  {
+                    R|<local>/firstIndex|.R|kotlin/Int.minus|(R|<local>/secondIndex|)
+                }
+            }
+
+        }
+
+        public final fun isPrivate(visibility: R|Visibility|): R|kotlin/Boolean| {
+            ^isPrivate ===(R|<local>/visibility|, Q|Visibilities.Private|) || ===(R|<local>/visibility|, Q|Visibilities.PrivateToThis|)
+        }
+
+        public final val DEFAULT_VISIBILITY: R|Visibilities.Public| = Q|Visibilities.Public|
+            public get(): R|Visibilities.Public|
+
+    }

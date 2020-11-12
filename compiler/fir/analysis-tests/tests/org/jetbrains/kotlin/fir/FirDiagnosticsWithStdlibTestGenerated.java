@@ -1234,6 +1234,11 @@ public class FirDiagnosticsWithStdlibTestGenerated extends AbstractFirDiagnostic
             runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/receiverResolutionInLambda.kt");
         }
 
+        @TestMetadata("Visibilities.kt")
+        public void testVisibilities() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/Visibilities.kt");
+        }
+
         @TestMetadata("weakHashMap.kt")
         public void testWeakHashMap() throws Exception {
             runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/weakHashMap.kt");
