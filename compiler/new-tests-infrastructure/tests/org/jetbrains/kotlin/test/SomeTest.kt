@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.test.model.FrontendKind
 import org.jetbrains.kotlin.test.services.JUnit5Assertions
 import org.jetbrains.kotlin.test.services.configuration.JsEnvironmentConfigurator
 import org.jetbrains.kotlin.test.services.configuration.JvmEnvironmentConfigurator
+import org.jetbrains.kotlin.test.services.fir.FirOldFrontendMetaConfigurator
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -45,6 +46,7 @@ class SomeTest {
 
         assertions = JUnit5Assertions
 
+        useMetaTestConfigurators(::FirOldFrontendMetaConfigurator)
         useConfigurators(::JvmEnvironmentConfigurator)
 
         useFrontendFacades(::FirFrontendFacade)
@@ -55,19 +57,7 @@ class SomeTest {
     @TestMetadata("a.kt")
     fun testFirAnalysisA() {
         val path = "compiler/new-tests-infrastructure/testData/a.kt"
-        val originalFile = File(path)
-        val isFirIdentical = originalFile.useLines { it.first() == "// FIR_IDENTICAL" }
-        val realPath = if (isFirIdentical) {
-            path
-        } else {
-            val realPath = "${path.removeSuffix(".kt")}.fir.kt"
-            val firFile = File(realPath)
-            if (!firFile.exists()) {
-                originalFile.copyTo(firFile)
-            }
-            realPath
-        }
-        testRunner(firAnalysisConfiguration).runTest(realPath)
+        testRunner(firAnalysisConfiguration).runTest(path)
     }
 
     private val classicAnalysisConfiguration: TestConfigurationBuilder.() -> Unit = {
