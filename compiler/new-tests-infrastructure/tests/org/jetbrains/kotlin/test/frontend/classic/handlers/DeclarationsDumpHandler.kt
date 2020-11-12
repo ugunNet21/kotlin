@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.DescriptorUtils
+import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives
+import org.jetbrains.kotlin.test.directives.DirectivesContainer
 import org.jetbrains.kotlin.test.frontend.classic.ClassicFrontendSourceArtifacts
 import org.jetbrains.kotlin.test.model.TestFile
 import org.jetbrains.kotlin.test.model.TestModule
@@ -26,9 +28,13 @@ import java.util.function.Predicate
 class DeclarationsDumpHandler(
     testServices: TestServices
 ) : ClassicFrontendAnalysisHandler(testServices) {
+    override val directivesContainers: List<DirectivesContainer>
+        get() = listOf(DiagnosticsDirectives)
+
     private val dumper: MultiModuleInfoDumper = MultiModuleInfoDumperImpl()
 
     override fun processAfterAllModules() {
+        if (dumper.isEmpty()) return
         val resultDump = dumper.generateResultingDump()
         val testDataFile = moduleStructure.originalTestDataFiles.first()
         val expectedFileName = testDataFile.nameWithoutExtension + ".txt"
@@ -37,6 +43,7 @@ class DeclarationsDumpHandler(
     }
 
     override fun processModule(module: TestModule, info: ClassicFrontendSourceArtifacts) {
+        if (DiagnosticsDirectives.skipTxt in module.directives) return
         val moduleDescriptor = info.analysisResult.moduleDescriptor
         val comparator = RecursiveDescriptorComparator(createdAffectedPackagesConfiguration(info.psiFiles, moduleDescriptor))
         val packages = info.psiFiles.values.map { it.packageFqName }

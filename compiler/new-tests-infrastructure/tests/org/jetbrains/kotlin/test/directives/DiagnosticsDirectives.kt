@@ -23,4 +23,9 @@ object DiagnosticsDirectives : SimpleDirectivesContainer() {
                 and it should be enabled in specific test
         """.trimIndent()
     )
+
+    val skipTxt = directive(
+        name = "SKIP_TXT",
+        description = "Disables handler which dumps declarations to testName.txt"
+    )
 }
