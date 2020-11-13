@@ -5,6 +5,10 @@
 
 package org.jetbrains.kotlin.gradle
 
+import org.jetbrains.kotlin.gradle.incapt.IncrementalAggregatingProcessor
+import org.jetbrains.kotlin.gradle.incapt.IncrementalBinaryIsolatingProcessor
+import org.jetbrains.kotlin.gradle.incapt.IncrementalIsolatingProcessor
+import org.jetbrains.kotlin.gradle.incapt.IncrementalProcessor
 import org.jetbrains.kotlin.gradle.util.modify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -111,7 +115,7 @@ class KaptIncrementalWithAggregatingApt : KaptIncrementalIT() {
             GradleVersionRequired.None
         ).apply {
             setupWorkingDir()
-            val processorPath = generateProcessor("AGGREGATING")
+            val processorPath = generateProcessor("AGGREGATING" to IncrementalProcessor::class.java)
 
             projectDir.resolve("app/build.gradle").appendText(
                 """
@@ -202,4 +206,164 @@ class KaptIncrementalWithAggregatingApt : KaptIncrementalIT() {
             )
         }
     }
+
+    @Test
+    fun testIncrementalAggregatingChanges() {
+        doIncrementalAggregatingChanges()
+    }
+
+    @Test
+    fun testIncrementalAggregatingChangesWithJdk9() {
+        val javaHome = File(System.getProperty("jdk9Home")!!)
+        Assume.assumeTrue("JDK 9 isn't available", javaHome.isDirectory)
+        val options = defaultBuildOptions().copy(javaHome = javaHome)
+        doIncrementalAggregatingChanges(buildOptions = options)
+    }
+
+    @Test
+    fun testIncrementalBinaryAggregatingChanges() {
+        doIncrementalAggregatingChanges(true)
+    }
+
+    @Test
+    fun testIncrementalBinaryAggregatingChangesWithJdk9() {
+        val javaHome = File(System.getProperty("jdk9Home")!!)
+        Assume.assumeTrue("JDK 9 isn't available", javaHome.isDirectory)
+        val options = defaultBuildOptions().copy(javaHome = javaHome)
+        doIncrementalAggregatingChanges(true, options)
+    }
+
+    private fun CompiledProject.checkAggregatingResource(check: (List<String>) -> Unit) {
+        val aggregatingResource = "build/tmp/kapt3/classes/main/generated.txt"
+        assertFileExists(aggregatingResource)
+        val lines = fileInWorkingDir(aggregatingResource).readLines()
+        check(lines)
+    }
+
+    fun doIncrementalAggregatingChanges(isBinary: Boolean = false, buildOptions: BuildOptions = defaultBuildOptions()) {
+        val project = Project(
+            "kaptIncrementalAggregatingProcessorProject",
+            GradleVersionRequired.None
+        ).apply {
+            setupIncrementalAptProject(
+                "ISOLATING" to if (isBinary) IncrementalBinaryIsolatingProcessor::class.java else IncrementalIsolatingProcessor::class.java,
+                "AGGREGATING" to IncrementalAggregatingProcessor::class.java
+            )
+        }
+
+        project.build("clean", "build", options = buildOptions) {
+            assertSuccessful()
+
+            assertEquals(
+                setOf(
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/bar/WithAnnotation.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/bar/noAnnotations.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/error/NonExistentClass.java").canonicalPath
+                ), getProcessedSources(output)
+            )
+
+            checkAggregatingResource { lines ->
+                assertEquals(1, lines.size)
+                assertTrue(lines.contains("WithAnnotationGenerated"))
+            }
+        }
+
+        //change file without annotations
+        project.projectFile("noAnnotations.kt").modify { current -> "$current\nfun otherFunction() {}" }
+
+        project.build("build", options = buildOptions) {
+            assertSuccessful()
+
+            assertEquals(
+                setOf(
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/bar/NoAnnotationsKt.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/error/NonExistentClass.java").canonicalPath
+                ), getProcessedSources(output)
+            )
+
+            checkAggregatingResource { lines ->
+                assertEquals(1, lines.size)
+                assertTrue(lines.contains("WithAnnotationGenerated"))
+            }
+        }
+
+        //add new file with annotations
+        val newFile = File(project.projectDir, "src/main/java/baz/BazClass.kt")
+        newFile.parentFile.mkdirs()
+        newFile.createNewFile()
+        project.projectFile("BazClass.kt").modify {
+            """
+                package baz
+
+                @example.ExampleAnnotation
+                class BazClass() {}
+            """.trimIndent()
+        }
+        project.build("build", options = buildOptions) {
+            assertSuccessful()
+            assertEquals(
+                setOf(
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/baz/BazClass.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/error/NonExistentClass.java").canonicalPath
+                ),
+                getProcessedSources(output)
+            )
+
+            checkAggregatingResource { lines ->
+                assertEquals(2, lines.size)
+                assertTrue(lines.contains("WithAnnotationGenerated"))
+                assertTrue(lines.contains("BazClassGenerated"))
+            }
+        }
+
+        //move annotation to nested class
+        project.projectFile("BazClass.kt").modify {
+            """
+                package baz
+
+                class BazClass() {
+                    @example.ExampleAnnotation
+                    class BazNested {}                 
+                }
+            """.trimIndent()
+        }
+        project.build("build", options = buildOptions) {
+            assertSuccessful()
+            assertEquals(
+                setOf(
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/baz/BazClass.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/error/NonExistentClass.java").canonicalPath
+                ),
+                getProcessedSources(output)
+            )
+
+            checkAggregatingResource { lines ->
+                assertEquals(2, lines.size)
+                assertTrue(lines.contains("WithAnnotationGenerated"))
+                assertTrue(lines.contains("BazNestedGenerated"))
+            }
+        }
+
+        //change file without annotations to check that nested class is aggregated
+        project.projectFile("noAnnotations.kt").modify { current -> "$current\nfun otherFunction2() {}" }
+
+        project.build("build", options = buildOptions) {
+            assertSuccessful()
+
+            assertEquals(
+                setOf(
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/bar/NoAnnotationsKt.java").canonicalPath,
+                    fileInWorkingDir("build/tmp/kapt3/stubs/main/error/NonExistentClass.java").canonicalPath
+                ), getProcessedSources(output)
+            )
+
+            checkAggregatingResource { lines ->
+                assertEquals(2, lines.size)
+                assertTrue(lines.contains("WithAnnotationGenerated"))
+                assertTrue(lines.contains("BazNestedGenerated"))
+            }
+        }
+    }
+
+
 }
