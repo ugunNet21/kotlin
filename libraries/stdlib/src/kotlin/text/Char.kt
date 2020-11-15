@@ -23,8 +23,8 @@ public inline operator fun Char.plus(other: String): String = this.toString() + 
  *
  * Two characters are considered the same ignoring case if at least one of the following is `true`:
  *   - The two characters are the same (as compared by the == operator)
- *   - Applying the method [uppercase] to each character produces the same result
- *   - Applying the method [lowercase] to each character produces the same result
+ *   - Applying the method [uppercaseChar] to each character produces the same result
+ *   - Applying the method [lowercaseChar] to each character produces the same result
  *
  * @sample samples.text.Chars.equals
  */
@@ -33,8 +33,8 @@ public fun Char.equals(other: Char, ignoreCase: Boolean = false): Boolean {
     if (this == other) return true
     if (!ignoreCase) return false
 
-    if (this.uppercase() == other.uppercase()) return true
-    if (this.lowercase() == other.lowercase()) return true
+    if (this.uppercaseChar() == other.uppercaseChar()) return true
+    if (this.lowercaseChar() == other.lowercaseChar()) return true
     return false
 }
 

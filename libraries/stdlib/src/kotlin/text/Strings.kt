@@ -9,6 +9,8 @@
 package kotlin.text
 
 import kotlin.contracts.contract
+import kotlin.internal.LowPriorityInOverloadResolution
+import kotlin.jvm.JvmName
 
 /**
  * Returns a sub sequence of this char sequence having leading and trailing characters matching the [predicate] removed.
@@ -709,6 +711,42 @@ public inline fun CharSequence.replace(regex: Regex, noinline transform: (MatchR
  */
 @kotlin.internal.InlineOnly
 public inline fun CharSequence.replaceFirst(regex: Regex, replacement: String): String = regex.replaceFirst(this, replacement)
+
+/**
+ * Returns a copy of this string having its first character replaced with the result of the specified [transform],
+ * or the original string if it's empty.
+ *
+ * @param transform function that takes the first character and returns the result of the transform applied to the character.
+ *
+ * @sample samples.text.Strings.replaceFirstChar
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@OptIn(kotlin.experimental.ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+@JvmName("replaceFirstCharWithChar")
+@kotlin.internal.InlineOnly
+public inline fun String.replaceFirstChar(transform: (Char) -> Char): String {
+    return if (isNotEmpty()) transform(this[0]) + substring(1) else this
+}
+
+/**
+ * Returns a copy of this string having its first character replaced with the result of the specified [transform],
+ * or the original string if it's empty.
+ *
+ * @param transform function that takes the first character and returns the result of the transform applied to the character.
+ *
+ * @sample samples.text.Strings.replaceFirstChar
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@OptIn(kotlin.experimental.ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+@JvmName("replaceFirstCharWithCharSequence")
+@kotlin.internal.InlineOnly
+public inline fun String.replaceFirstChar(transform: (Char) -> CharSequence): String {
+    return if (isNotEmpty()) transform(this[0]).toString() + substring(1) else this
+}
 
 
 /**

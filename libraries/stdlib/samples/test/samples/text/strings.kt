@@ -6,15 +6,24 @@ import kotlin.test.*
 class Strings {
 
     @Sample
-    fun capitalizeFirst() {
-        assertPrints("abcd".capitalizeFirst(), "Abcd")
-        assertPrints("Abcd".capitalizeFirst(), "Abcd")
+    fun capitalize() {
+        assertPrints("abcd".capitalize(), "Abcd")
+        assertPrints("Abcd".capitalize(), "Abcd")
     }
 
     @Sample
-    fun decapitalizeFirst() {
-        assertPrints("abcd".decapitalizeFirst(), "abcd")
-        assertPrints("Abcd".decapitalizeFirst(), "abcd")
+    fun decapitalize() {
+        assertPrints("abcd".decapitalize(), "abcd")
+        assertPrints("Abcd".decapitalize(), "abcd")
+    }
+
+    @Sample
+    fun replaceFirstChar() {
+        assertPrints("kotlin".replaceFirstChar { it.uppercaseChar() }, "Kotlin")
+
+        val sentence = "Welcome to Kotlin!"
+        val words = sentence.split(' ');
+        assertPrints(words.joinToString(separator = "_") { word -> word.replaceFirstChar { it.lowercaseChar() } }, "welcome_to_kotlin!")
     }
 
     @Sample
@@ -134,7 +143,7 @@ class Strings {
     fun associateByWithValueTransform() {
         val string = "bonne journée"
         // associate each character by the code of its upper case equivalent and transform the character to upper case
-        val result = string.associateBy({ char -> char.uppercase().toInt() }, { char -> char.uppercase() })
+        val result = string.associateBy({ char -> char.uppercaseChar().toInt() }, { char -> char.uppercaseChar() })
         // notice each char code occurs only once
         assertPrints(result, "{66=B, 79=O, 78=N, 69=E, 32= , 74=J, 85=U, 82=R, 201=É}")
     }
@@ -154,7 +163,7 @@ class Strings {
         val string = "bonne journée"
         // associate each character by the code of its upper case equivalent and transform the character to upper case
         val result = mutableMapOf<Int, Char>()
-        string.associateByTo(result, { char -> char.uppercase().toInt() }, { char -> char.uppercase() })
+        string.associateByTo(result, { char -> char.uppercaseChar().toInt() }, { char -> char.uppercaseChar() })
         // notice each char code occurs only once
         assertPrints(result, "{66=B, 79=O, 78=N, 69=E, 32= , 74=J, 85=U, 82=R, 201=É}")
     }
@@ -390,7 +399,7 @@ class Strings {
     @Sample
     fun map() {
         val string = "kotlin"
-        assertPrints(string.map { it.uppercase() }, "[K, O, T, L, I, N]")
+        assertPrints(string.map { it.uppercaseChar() }, "[K, O, T, L, I, N]")
     }
 
     @Sample

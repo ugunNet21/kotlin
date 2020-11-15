@@ -5,8 +5,6 @@
 
 package kotlin.text
 
-import kotlin.internal.LowPriorityInOverloadResolution
-
 expect class Regex {
     constructor(pattern: String)
     constructor(pattern: String, option: RegexOption)
@@ -72,7 +70,7 @@ expect fun Char.isWhitespace(): Boolean
  */
 @OptIn(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
-public inline fun Char.toLowerCase(): Char = lowercase()
+public inline fun Char.toLowerCase(): Char = lowercaseChar()
 
 /**
  * Converts this character to lower case using Unicode mapping rules of the invariant locale.
@@ -80,14 +78,22 @@ public inline fun Char.toLowerCase(): Char = lowercase()
  */
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
-public expect fun Char.lowercase(): Char
+public expect fun Char.lowercaseChar(): Char
+
+/**
+ * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.lowercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+public expect fun Char.lowercase(): String
 
 /**
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
  */
 @OptIn(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
-public inline fun Char.toUpperCase(): Char = uppercase()
+public inline fun Char.toUpperCase(): Char = uppercaseChar()
 
 /**
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
@@ -95,7 +101,15 @@ public inline fun Char.toUpperCase(): Char = uppercase()
  */
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
-public expect fun Char.uppercase(): Char
+public expect fun Char.uppercaseChar(): Char
+
+/**
+ * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.uppercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+public expect fun Char.uppercase(): String
 
 expect fun Char.isHighSurrogate(): Boolean
 expect fun Char.isLowSurrogate(): Boolean
@@ -258,34 +272,18 @@ public expect fun String.lowercase(): String
  *
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
+ *
+ * @sample samples.text.Strings.capitalize
  */
 public expect fun String.capitalize(): String
 
 /**
- * Returns a copy of this string having its first letter titlecased using Unicode mapping rules of the invariant locale,
- * or the original string if it's empty or already starts with a title case letter.
- *
- * @sample samples.text.Strings.capitalizeFirst
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public expect fun String.capitalizeFirst(): String
-
-/**
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
+ *
+ * @sample samples.text.Strings.decapitalize
  */
 public expect fun String.decapitalize(): String
-
-/**
- * Returns a copy of this string having its first letter lowercased using Unicode mapping rules of the invariant locale,
- * or the original string if it's empty or already starts with a lower case letter.
- *
- * @sample samples.text.Strings.decapitalizeFirst
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public expect fun String.decapitalizeFirst(): String
 
 public expect fun CharSequence.repeat(n: Int): String
 

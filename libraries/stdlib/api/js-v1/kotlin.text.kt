@@ -120,10 +120,6 @@ public inline fun <V, M : kotlin.collections.MutableMap<in kotlin.Char, in V>> k
 
 public fun kotlin.String.capitalize(): kotlin.String
 
-@kotlin.SinceKotlin(version = "1.4")
-@kotlin.ExperimentalStdlibApi
-public fun kotlin.String.capitalizeFirst(): kotlin.String
-
 @kotlin.SinceKotlin(version = "1.2")
 public fun kotlin.CharSequence.chunked(size: kotlin.Int): kotlin.collections.List<kotlin.String>
 
@@ -170,10 +166,6 @@ public inline fun kotlin.CharSequence.count(): kotlin.Int
 public inline fun kotlin.CharSequence.count(predicate: (kotlin.Char) -> kotlin.Boolean): kotlin.Int
 
 public fun kotlin.String.decapitalize(): kotlin.String
-
-@kotlin.SinceKotlin(version = "1.4")
-@kotlin.ExperimentalStdlibApi
-public fun kotlin.String.decapitalizeFirst(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
@@ -393,12 +385,17 @@ public fun kotlin.CharSequence.lines(): kotlin.collections.List<kotlin.String>
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public inline fun kotlin.Char.lowercase(): kotlin.Char
+public inline fun kotlin.Char.lowercase(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.lowercase(): kotlin.String
+
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public inline fun kotlin.Char.lowercaseChar(): kotlin.Char
 
 public inline fun <R> kotlin.CharSequence.map(transform: (kotlin.Char) -> R): kotlin.collections.List<R>
 
@@ -676,6 +673,20 @@ public inline fun kotlin.CharSequence.replaceFirst(regex: kotlin.text.Regex, rep
 public fun kotlin.String.replaceFirst(oldChar: kotlin.Char, newChar: kotlin.Char, ignoreCase: kotlin.Boolean = ...): kotlin.String
 
 public fun kotlin.String.replaceFirst(oldValue: kotlin.String, newValue: kotlin.String, ignoreCase: kotlin.Boolean = ...): kotlin.String
+
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
+@kotlin.OverloadResolutionByLambdaReturnType
+@kotlin.jvm.JvmName(name = "replaceFirstCharWithChar")
+@kotlin.internal.InlineOnly
+public inline fun kotlin.String.replaceFirstChar(transform: (kotlin.Char) -> kotlin.Char): kotlin.String
+
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
+@kotlin.OverloadResolutionByLambdaReturnType
+@kotlin.jvm.JvmName(name = "replaceFirstCharWithCharSequence")
+@kotlin.internal.InlineOnly
+public inline fun kotlin.String.replaceFirstChar(transform: (kotlin.Char) -> kotlin.CharSequence): kotlin.String
 
 public fun kotlin.String.replaceIndent(newIndent: kotlin.String = ...): kotlin.String
 
@@ -1100,12 +1111,17 @@ public fun kotlin.String.trimStart(vararg chars: kotlin.Char): kotlin.String
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public inline fun kotlin.Char.uppercase(): kotlin.Char
+public inline fun kotlin.Char.uppercase(): kotlin.String
 
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.uppercase(): kotlin.String
+
+@kotlin.SinceKotlin(version = "1.4")
+@kotlin.ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public inline fun kotlin.Char.uppercaseChar(): kotlin.Char
 
 @kotlin.SinceKotlin(version = "1.2")
 public fun kotlin.CharSequence.windowed(size: kotlin.Int, step: kotlin.Int = ..., partialWindows: kotlin.Boolean = ...): kotlin.collections.List<kotlin.String>

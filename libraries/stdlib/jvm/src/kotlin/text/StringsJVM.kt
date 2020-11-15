@@ -664,21 +664,11 @@ public inline fun String.toPattern(flags: Int = 0): java.util.regex.Pattern {
  *
  * The title case of a character is usually the same as its upper case with several exceptions.
  * The particular list of characters with the special title case form depends on the underlying platform.
+ *
+ * @sample samples.text.Strings.capitalize
  */
 public actual fun String.capitalize(): String {
     return capitalize(Locale.getDefault())
-}
-
-/**
- * Returns a copy of this string having its first letter titlecased using Unicode mapping rules of the invariant locale,
- * or the original string if it's empty or already starts with a title case letter.
- *
- * @sample samples.text.Strings.capitalizeFirst
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public actual fun String.capitalizeFirst(): String {
-    return capitalizeFirst(Locale.ROOT)
 }
 
 /**
@@ -693,30 +683,17 @@ public actual fun String.capitalizeFirst(): String {
 @WasExperimental(ExperimentalStdlibApi::class)
 @kotlin.internal.LowPriorityInOverloadResolution // To avoid conflicts in function references, as this function was introduced later than common capitalize()
 public fun String.capitalize(locale: Locale): String {
-    return capitalizeFirst(locale)
-}
-
-/**
- * Returns a copy of this string having its first letter titlecased using the rules of the specified [locale],
- * or the original string if it's empty or already starts with a title case letter.
- *
- * The title case of a character is usually the same as its upper case with several exceptions.
- * The particular list of characters with the special title case form depends on the underlying platform.
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public fun String.capitalizeFirst(locale: Locale): String {
     if (isNotEmpty()) {
         val firstChar = this[0]
         if (firstChar.isLowerCase()) {
             return buildString {
-                val titleChar = firstChar.titlecase()
-                if (titleChar != firstChar.uppercase()) {
+                val titleChar = firstChar.titlecaseChar()
+                if (titleChar != firstChar.uppercaseChar()) {
                     append(titleChar)
                 } else {
-                    append(this@capitalizeFirst.substring(0, 1).uppercase(locale))
+                    append(this@capitalize.substring(0, 1).uppercase(locale))
                 }
-                append(this@capitalizeFirst.substring(1))
+                append(this@capitalize.substring(1))
             }
         }
     }
@@ -726,21 +703,11 @@ public fun String.capitalizeFirst(locale: Locale): String {
 /**
  * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
  * or the original string if it's empty or already starts with a lower case letter.
+ *
+ * @sample samples.text.Strings.decapitalize
  */
 public actual fun String.decapitalize(): String {
     return if (isNotEmpty() && !this[0].isLowerCase()) substring(0, 1).toLowerCase() + substring(1) else this
-}
-
-/**
- * Returns a copy of this string having its first letter lowercased using Unicode mapping rules of the invariant locale,
- * or the original string if it's empty or already starts with a lower case letter.
- *
- * @sample samples.text.Strings.decapitalizeFirst
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public actual fun String.decapitalizeFirst(): String {
-    return if (isNotEmpty() && !this[0].isLowerCase()) substring(0, 1).lowercase() + substring(1) else this
 }
 
 /**
@@ -752,16 +719,6 @@ public actual fun String.decapitalizeFirst(): String {
 @WasExperimental(ExperimentalStdlibApi::class)
 @kotlin.internal.LowPriorityInOverloadResolution // To avoid conflicts in function references, as this function was introduced later than common decapitalize()
 public fun String.decapitalize(locale: Locale): String {
-    return decapitalizeFirst(locale)
-}
-
-/**
- * Returns a copy of this string having its first letter lowercased using the rules of the specified [locale],
- * or the original string, if it's empty or already starts with a lower case letter.
- */
-@SinceKotlin("1.4")
-@ExperimentalStdlibApi
-public fun String.decapitalizeFirst(locale: Locale): String {
     return if (isNotEmpty() && !this[0].isLowerCase()) substring(0, 1).lowercase(locale) + substring(1) else this
 }
 

@@ -92,7 +92,16 @@ public inline fun Char.isLowerCase(): Boolean = Character.isLowerCase(this)
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public actual inline fun Char.uppercase(): Char = Character.toUpperCase(this)
+public actual inline fun Char.uppercaseChar(): Char = Character.toUpperCase(this)
+
+/**
+ * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.uppercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public actual inline fun Char.uppercase(): String = toString().uppercase()
 
 /**
  * Converts this character to lower case using Unicode mapping rules of the invariant locale.
@@ -101,7 +110,16 @@ public actual inline fun Char.uppercase(): Char = Character.toUpperCase(this)
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public actual inline fun Char.lowercase(): Char = Character.toLowerCase(this)
+public actual inline fun Char.lowercaseChar(): Char = Character.toLowerCase(this)
+
+/**
+ * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.lowercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public actual inline fun Char.lowercase(): String = toString().lowercase()
 
 /**
  * Returns `true` if this character is a titlecase character.
@@ -117,7 +135,7 @@ public inline fun Char.isTitleCase(): Boolean = Character.isTitleCase(this)
  */
 @OptIn(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
-public inline fun Char.toTitleCase(): Char = titlecase()
+public inline fun Char.toTitleCase(): Char = titlecaseChar()
 
 /**
  * Converts this character to title case using Unicode mapping rules of the invariant locale.
@@ -127,7 +145,19 @@ public inline fun Char.toTitleCase(): Char = titlecase()
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public inline fun Char.titlecase(): Char = Character.toTitleCase(this)
+public inline fun Char.titlecaseChar(): Char = Character.toTitleCase(this)
+
+/**
+ * Converts this character to title case using Unicode mapping rules of the invariant locale.
+ *
+ * @sample samples.text.Chars.titlecase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public fun Char.titlecase(): String {
+    return titlecaseChar().let { if (it != uppercaseChar()) it.toString() else uppercase() }
+}
 
 /**
  * Returns a value indicating a character's general category.

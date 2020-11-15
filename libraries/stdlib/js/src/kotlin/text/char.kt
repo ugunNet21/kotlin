@@ -15,7 +15,16 @@ public actual fun Char.isWhitespace(): Boolean = toString().matches("[\\s\\xA0]"
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public actual inline fun Char.lowercase(): Char = js("String.fromCharCode")(toInt()).toLowerCase().charCodeAt(0).unsafeCast<Int>().toChar()
+public actual inline fun Char.lowercaseChar(): Char = js("String.fromCharCode")(toInt()).toLowerCase().charCodeAt(0).unsafeCast<Int>().toChar()
+
+/**
+ * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.lowercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public actual inline fun Char.lowercase(): String = js("String.fromCharCode")(toInt()).toLowerCase() as String
 
 /**
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
@@ -24,7 +33,16 @@ public actual inline fun Char.lowercase(): Char = js("String.fromCharCode")(toIn
 @SinceKotlin("1.4")
 @ExperimentalStdlibApi
 @kotlin.internal.InlineOnly
-public actual inline fun Char.uppercase(): Char = js("String.fromCharCode")(toInt()).toUpperCase().charCodeAt(0).unsafeCast<Int>().toChar()
+public actual inline fun Char.uppercaseChar(): Char = js("String.fromCharCode")(toInt()).toUpperCase().charCodeAt(0).unsafeCast<Int>().toChar()
+
+/**
+ * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ * @sample samples.text.Chars.uppercase
+ */
+@SinceKotlin("1.4")
+@ExperimentalStdlibApi
+@kotlin.internal.InlineOnly
+public actual inline fun Char.uppercase(): String = js("String.fromCharCode")(toInt()).toUpperCase() as String
 
 /**
  * Returns `true` if this character is a Unicode high-surrogate code unit (also known as leading-surrogate code unit).

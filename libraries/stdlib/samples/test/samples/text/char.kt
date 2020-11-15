@@ -2,7 +2,6 @@ package samples.text
 
 import samples.*
 import kotlin.test.*
-import java.util.*
 
 class Chars {
 
@@ -84,16 +83,20 @@ class Chars {
 
     @Sample
     fun uppercase() {
-        val chars = listOf('a', 'ω', '1', 'A', '+')
+        val chars = listOf('a', 'ω', '1', 'ŉ', 'A', '+', 'ß')
+        val upperCaseChars = chars.map { it.uppercaseChar() }
+        assertPrints(upperCaseChars, "[A, Ω, 1, ŉ, A, +, ß]")
         val upperCases = chars.map { it.uppercase() }
-        assertPrints(upperCases, "[A, Ω, 1, A, +]")
+        assertPrints(upperCases, "[A, Ω, 1, ʼN, A, +, SS]")
     }
 
     @Sample
     fun lowercase() {
-        val chars = listOf('A', 'Ω', '1', 'a', '+')
+        val chars = listOf('A', 'Ω', '1', 'a', '+', 'İ')
+        val lowerCaseChars = chars.map { it.lowercaseChar() }
+        assertPrints(lowerCaseChars, "[a, ω, 1, a, +, i]")
         val lowerCases = chars.map { it.lowercase() }
-        assertPrints(lowerCases, "[a, ω, 1, a, +]")
+        assertPrints(lowerCases, "[a, ω, 1, a, +, \u0069\u0307]")
     }
 
     @Sample
@@ -107,7 +110,7 @@ class Chars {
     @Sample
     fun titlecase() {
         val chars = listOf('a', 'ǅ', '1', '+')
-        val titleCases = chars.map { it.titlecase() }
+        val titleCases = chars.map { it.titlecaseChar() }
         assertPrints(titleCases, "[A, ǅ, 1, +]")
     }
 
