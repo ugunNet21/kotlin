@@ -236,7 +236,8 @@ class ConeRawType(lowerBound: ConeKotlinType, upperBound: ConeKotlinType) : Cone
  *   only via ConeTypeIntersector
  */
 class ConeIntersectionType(
-    val intersectedTypes: Collection<ConeKotlinType>
+    val intersectedTypes: Collection<ConeKotlinType>,
+    val isCatchType: Boolean = false
 ) : ConeSimpleKotlinType(), IntersectionTypeConstructorMarker {
     override val typeArguments: Array<out ConeTypeProjection>
         get() = emptyArray()

@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.impl.IrCatchType
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
@@ -130,7 +131,14 @@ class Fir2IrTypeConverter(
             }
             is ConeIntersectionType -> {
                 // TODO: add intersectionTypeApproximation
-                intersectedTypes.first().toIrType(typeContext)
+                if (this.isCatchType) {
+                    IrCatchType(
+                        intersectedTypes.map { it.toIrType(typeContext) }.toSet(),
+                        with(annotationGenerator) { annotations.toIrAnnotations() }
+                    )
+                } else {
+                    intersectedTypes.first().toIrType(typeContext)
+                }
             }
             is ConeStubType -> createErrorType()
             is ConeIntegerLiteralType -> createErrorType()
