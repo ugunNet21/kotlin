@@ -10,6 +10,11 @@ public actual fun Char.isWhitespace(): Boolean = toString().matches("[\\s\\xA0]"
 
 /**
  * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ *
+ * This function performs one-to-one character mapping using case mapping information from the UnicodeData file,
+ * to support one-to-many character mapping use the [lowercase] function.
+ * If this character has no mapping equivalent, the character itself is returned.
+ *
  * @sample samples.text.Chars.lowercase
  */
 @SinceKotlin("1.4")
@@ -19,6 +24,9 @@ public actual inline fun Char.lowercaseChar(): Char = js("String.fromCharCode")(
 
 /**
  * Converts this character to lower case using Unicode mapping rules of the invariant locale.
+ *
+ * If this character has no mapping equivalent, a [String] equal to [Char.toString] is returned.
+ *
  * @sample samples.text.Chars.lowercase
  */
 @SinceKotlin("1.4")
@@ -28,6 +36,11 @@ public actual inline fun Char.lowercase(): String = js("String.fromCharCode")(to
 
 /**
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ *
+ * This function performs one-to-one character mapping using case mapping information from the UnicodeData file,
+ * to support one-to-many character mapping use the [uppercase] function.
+ * If this character has no mapping equivalent, the character itself is returned.
+ *
  * @sample samples.text.Chars.uppercase
  */
 @SinceKotlin("1.4")
@@ -37,6 +50,9 @@ public actual inline fun Char.uppercaseChar(): Char = js("String.fromCharCode")(
 
 /**
  * Converts this character to upper case using Unicode mapping rules of the invariant locale.
+ *
+ * If this character has no mapping equivalent, a [String] equal to [Char.toString] is returned.
+ *
  * @sample samples.text.Chars.uppercase
  */
 @SinceKotlin("1.4")
