@@ -8,6 +8,7 @@ javaHome = rootProject.extra["JDK_16"] as String
 
 dependencies {
     compile(project(":core:compiler.common"))
+    api(project(":compiler:util"))
     compile(project(":core:util.runtime"))
     compile(kotlinStdlib())
     compile(project(":kotlin-annotations-jvm"))
