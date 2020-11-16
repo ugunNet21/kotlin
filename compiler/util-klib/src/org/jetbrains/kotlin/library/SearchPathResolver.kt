@@ -46,7 +46,7 @@ abstract class KotlinLibrarySearchPathResolver<L : KotlinLibrary>(
     abstract fun libraryComponentBuilder(file: File, isDefault: Boolean): List<L>
 
     private val directLibraries: List<KotlinLibrary> by lazy {
-        directLibs.mapNotNull { found(File(it)) }.flatMap { libraryComponentBuilder(it, false) }
+        directLibs.mapNotNull { found(File(it), useCache = false) }.flatMap { libraryComponentBuilder(it, false) }
     }
 
     // This is the place where we specify the order of library search.
@@ -54,8 +54,11 @@ abstract class KotlinLibrarySearchPathResolver<L : KotlinLibrary>(
         (listOf(currentDirHead) + repoRoots + listOf(localHead, distHead, distPlatformHead)).filterNotNull()
     }
 
-    private fun found(candidate: File): File? {
-        fun check(file: File): Boolean = file.exists
+    private val files: Set<String> by lazy { searchRoots.flatMap { it.listFilesOrEmpty }.map { it.absolutePath }.toSet() }
+
+    private fun found(candidate: File, useCache: Boolean): File? {
+        fun check(file: File): Boolean =
+            if (useCache) files.contains(file.absolutePath) else file.exists
 
         val noSuffix = File(candidate.path.removeSuffixIfPresent(KLIB_FILE_EXTENSION_WITH_DOT))
         val withSuffix = File(candidate.path.suffixIfNot(KLIB_FILE_EXTENSION_WITH_DOT))
@@ -105,11 +108,11 @@ abstract class KotlinLibrarySearchPathResolver<L : KotlinLibrary>(
                 directLibsSequence(givenPath)
             }
             given.isAbsolute ->
-                sequenceOf(found(given))
+                sequenceOf(found(given, useCache = false))
             else -> {
                 // Search among libraries in repositories by library filename.
                 val repoLibs = searchRoots.asSequence().map {
-                    found(File(it, given))
+                    found(File(it, given), useCache = true)
                 }
                 // The given path still may denote a unique name of a direct library.
                 directLibsSequence(givenPath) + repoLibs
