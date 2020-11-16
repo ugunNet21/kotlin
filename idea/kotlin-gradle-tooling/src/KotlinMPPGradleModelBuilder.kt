@@ -817,14 +817,14 @@ class KotlinMPPGradleModelBuilder : ModelBuilderService {
                 continue
             }
 
-            allSourceSetToCompilations[sourceSet]?.all { it.isTestModule }?.let { isTest ->
-                sourceSet.isTestModule = isTest
-            }
+            sourceSet.isTestModule = allSourceSetToCompilations[sourceSet]?.all { it.isTestModule } ?: false
 
-            compiledSourceSetToCompilations[sourceSet]?.let { compilations ->
-                val platforms = compilations.map { it.platform }
-                sourceSet.actualPlatforms.addSimplePlatforms(platforms)
-            }
+            val platforms = if (isHMPPEnabled)
+                allSourceSetToCompilations[sourceSet]?.map { it.platform }
+            else
+                compiledSourceSetToCompilations[sourceSet]?.map { it.platform }
+
+            platforms?.let { sourceSet.actualPlatforms.addSimplePlatforms(it) }
 
             // never makes sense to coerce single-targeted source-sets
             if (sourceSet.actualPlatforms.platforms.size != 1) {
