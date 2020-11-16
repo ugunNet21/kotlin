@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.resolve.descriptorUtil
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.StandardNames.ENUM_VALUE_OF
+import org.jetbrains.kotlin.config.LanguageFeature
+import org.jetbrains.kotlin.config.LanguageVersionSettings
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.ClassKind.*
 import org.jetbrains.kotlin.descriptors.annotations.Annotated
@@ -376,7 +378,7 @@ fun ClassifierDescriptor.getAllSuperClassifiers(): Sequence<ClassifierDescriptor
 // Note this is a generic and slow implementation which would work almost for any subclass of ClassDescriptor.
 // Please avoid using it in new code.
 // TODO: do something more clever instead at call sites of this function
-fun computeSealedSubclasses(sealedClass: ClassDescriptor): Collection<ClassDescriptor> {
+fun computeSealedSubclasses(sealedClass: ClassDescriptor, languageVersionSettings: LanguageVersionSettings): Collection<ClassDescriptor> {
     if (sealedClass.modality != Modality.SEALED) return emptyList()
 
     val result = linkedSetOf<ClassDescriptor>()
@@ -395,9 +397,17 @@ fun computeSealedSubclasses(sealedClass: ClassDescriptor): Collection<ClassDescr
         }
     }
 
-    val container = sealedClass.containingDeclaration
+    val freeSealedClassesAreEnabled = languageVersionSettings.supportsFeature(LanguageFeature.FreedomForSealedClasses)
+    val container = if (!freeSealedClassesAreEnabled) {
+        sealedClass.containingDeclaration
+    } else {
+        sealedClass.parents.firstOrNull { it is PackageFragmentDescriptor }
+    }
     if (container is PackageFragmentDescriptor) {
-        collectSubclasses(container.getMemberScope(), collectNested = false)
+        collectSubclasses(
+            container.getMemberScope(),
+            collectNested = freeSealedClassesAreEnabled
+        )
     }
     collectSubclasses(sealedClass.unsubstitutedInnerClassesScope, collectNested = true)
     return result

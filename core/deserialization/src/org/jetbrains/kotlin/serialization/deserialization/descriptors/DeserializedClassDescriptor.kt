@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.serialization.deserialization.descriptors
 
+import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.impl.AbstractClassDescriptor
@@ -163,7 +164,7 @@ class DeserializedClassDescriptor(
         }
 
         // This is needed because classes compiled with Kotlin 1.0 did not contain the sealed_subclass_fq_name field
-        return computeSealedSubclasses(this)
+        return computeSealedSubclasses(this, LanguageVersionSettingsImpl.DEFAULT)
     }
 
     override fun getSealedSubclasses() = sealedSubclasses()
