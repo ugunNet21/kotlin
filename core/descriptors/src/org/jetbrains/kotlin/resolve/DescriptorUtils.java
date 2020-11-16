@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns;
 import org.jetbrains.kotlin.builtins.UnsignedTypes;
+import org.jetbrains.kotlin.config.LanguageFeature;
 import org.jetbrains.kotlin.config.LanguageVersionSettings;
 import org.jetbrains.kotlin.descriptors.*;
 import org.jetbrains.kotlin.descriptors.annotations.Annotated;
@@ -386,8 +387,15 @@ public class DescriptorUtils {
             @NotNull LanguageVersionSettings languageVersionSettings
     ) {
         ClassKind classKind = classDescriptor.getKind();
-        if (classKind == ClassKind.ENUM_CLASS || classKind.isSingleton() || isSealedClass(classDescriptor)) {
+        if (classKind == ClassKind.ENUM_CLASS || classKind.isSingleton()) {
             return DescriptorVisibilities.PRIVATE;
+        }
+        if (isSealedClass(classDescriptor)) {
+            if (languageVersionSettings.supportsFeature(LanguageFeature.FreedomForSealedClasses)) {
+                return DescriptorVisibilities.INTERNAL;
+            } else {
+                return DescriptorVisibilities.PRIVATE;
+            }
         }
         if (isAnonymousObject(classDescriptor)) {
             return DescriptorVisibilities.DEFAULT_VISIBILITY;
