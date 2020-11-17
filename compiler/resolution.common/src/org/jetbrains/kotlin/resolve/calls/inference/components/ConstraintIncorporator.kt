@@ -45,9 +45,6 @@ class ConstraintIncorporator(
         if (c.areThereRecursiveConstraints(typeVariable, constraint)) return
 
         c.directWithVariable(typeVariable, constraint)
-        if (constraint.type.contains { it is TypeVariableTypeConstructorMarker }) {
-            c.otherInsideMyConstraint(typeVariable, constraint)
-        }
         c.insideOtherConstraint(typeVariable, constraint)
     }
 
@@ -57,7 +54,6 @@ class ConstraintIncorporator(
         if (c.areThereRecursiveConstraints(typeVariable, constraint)) return
 
         c.directWithVariable(typeVariable, constraint)
-        c.otherInsideMyConstraint(typeVariable, constraint)
         c.insideOtherConstraint(typeVariable, constraint)
     }
 
@@ -99,27 +95,25 @@ class ConstraintIncorporator(
     }
 
     // \alpha <: Inv<\beta>, \beta <: Number => \alpha <: Inv<out Number>
-    private fun Context.otherInsideMyConstraint(
+    fun insideOtherConstraintOfVariablesWithPostponedIncorporation(
+        c: Context,
         typeVariable: TypeVariableMarker,
         constraint: Constraint
-    ) {
-        val otherInMyConstraint = SmartSet.create<TypeVariableMarker>()
-        constraint.type.contains {
-            otherInMyConstraint.addIfNotNull(this.getTypeVariable(it.typeConstructor()))
-            false
-        }
-
-        for (otherTypeVariable in otherInMyConstraint) {
-            // to avoid ConcurrentModificationException
-            val otherConstraints = SmartList(this.getConstraintsForVariable(otherTypeVariable))
-            for (otherConstraint in otherConstraints) {
-                generateNewConstraint(typeVariable, constraint, otherTypeVariable, otherConstraint)
+    ) = with(c){
+        val freshTypeConstructor = typeVariable.freshTypeConstructor()
+        val variables = this.allTypeVariablesWithConstraints
+        for (typeVariableWithConstraint in variables) {
+            val constraintsWhichConstraintMyVariable = typeVariableWithConstraint.constraints.filter {
+                it.type.contains { it.typeConstructor() == freshTypeConstructor }
+            }
+            constraintsWhichConstraintMyVariable.forEach {
+                generateNewConstraint(typeVariableWithConstraint.typeVariable, it, typeVariable, constraint)
             }
         }
     }
 
     // \alpha <: Number, \beta <: Inv<\alpha> => \beta <: Inv<out Number>
-    private fun Context.insideOtherConstraint(
+    fun Context.insideOtherConstraint(
         typeVariable: TypeVariableMarker,
         constraint: Constraint
     ) {

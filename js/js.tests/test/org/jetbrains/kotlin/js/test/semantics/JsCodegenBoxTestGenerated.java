@@ -1358,6 +1358,11 @@ public class JsCodegenBoxTestGenerated extends AbstractJsCodegenBoxTest {
             runTest("compiler/testData/codegen/box/builderInference/substituteStubTypeIntoCR.kt");
         }
 
+        @TestMetadata("substituteStubTypeIntoCR2.kt")
+        public void testSubstituteStubTypeIntoCR2() throws Exception {
+            runTest("compiler/testData/codegen/box/builderInference/substituteStubTypeIntoCR2.kt");
+        }
+
         @TestMetadata("substituteStubTypeIntolambdaParameterDescriptor.kt")
         public void testSubstituteStubTypeIntolambdaParameterDescriptor() throws Exception {
             runTest("compiler/testData/codegen/box/builderInference/substituteStubTypeIntolambdaParameterDescriptor.kt");

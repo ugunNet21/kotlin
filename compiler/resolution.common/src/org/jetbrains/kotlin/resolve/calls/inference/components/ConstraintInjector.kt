@@ -57,7 +57,7 @@ class ConstraintInjector(
         addSubTypeConstraintAndIncorporateIt(this, b, a, typeCheckerContext)
     }
 
-    fun addInitialEqualityConstraint(c: Context, a: KotlinTypeMarker, b: KotlinTypeMarker, position: ConstraintPosition) = with(c) {
+    fun addInitialEqualityConstraint(c: Context, a: KotlinTypeMarker, b: KotlinTypeMarker, position: ConstraintPosition, fromFixVariable: Boolean = false) = with(c) {
         val (typeVariable, equalType) = when {
             a.typeConstructor(c) is TypeVariableTypeConstructorMarker -> a to b
             b.typeConstructor(c) is TypeVariableTypeConstructorMarker -> b to a
@@ -73,7 +73,7 @@ class ConstraintInjector(
         }
 
         updateAllowedTypeDepth(c, equalType)
-        addEqualityConstraintAndIncorporateIt(c, typeVariable, equalType, typeCheckerContext)
+        addEqualityConstraintAndIncorporateIt(c, typeVariable, equalType, typeCheckerContext, fromFixVariable)
     }
 
     private fun addSubTypeConstraintAndIncorporateIt(
@@ -92,10 +92,21 @@ class ConstraintInjector(
         c: Context,
         typeVariable: KotlinTypeMarker,
         equalType: KotlinTypeMarker,
-        typeCheckerContext: TypeCheckerContext
+        typeCheckerContext: TypeCheckerContext,
+        fromFixVariable: Boolean = false
     ) {
         typeCheckerContext.setConstrainingTypesToPrintDebugInfo(typeVariable, equalType)
         typeCheckerContext.addEqualityConstraint(typeVariable.typeConstructor(c), equalType)
+
+        val cons = c.notFixedTypeVariables[typeVariable.typeConstructor(c)]!!.constraints.firstOrNull { it.kind == EQUALITY }
+
+        if (cons != null && fromFixVariable) {
+            constraintIncorporator.insideOtherConstraintOfVariablesWithPostponedIncorporation(
+                typeCheckerContext,
+                c.notFixedTypeVariables[typeVariable.typeConstructor(c)]!!.typeVariable,
+                cons
+            )
+        }
 
         processConstraints(c, typeCheckerContext, constraintIncorporator::incorporateEqualityConstraint)
     }
