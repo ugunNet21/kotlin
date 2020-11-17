@@ -156,13 +156,14 @@ class KotlinSourceSetDataService : AbstractProjectDataService<GradleSourceSetDat
             val platformKinds = kotlinSourceSet.actualPlatforms.platforms //TODO(auskov): fix calculation of jvm target
                 .map { IdePlatformKindTooling.getTooling(it).kind }
                 .flatMap { platformKind ->
-                    when (platformKind) {
-                        is JvmIdePlatformKind -> {
+                    when {
+                        platformKind is JvmIdePlatformKind -> {
                             val jvmTarget = JvmTarget.fromString(moduleData.targetCompatibility ?: "") ?: JvmTarget.DEFAULT
                             JvmPlatforms.jvmPlatformByTargetVersion(jvmTarget).componentPlatforms
                         }
-                        is NativeIdePlatformKind -> NativePlatforms.nativePlatformByTargetNames(moduleData.konanTargets)
-                        else -> platformKind.defaultPlatform.filter { it.isRelevantFor(projectPlatforms) }
+                        platformKind is NativeIdePlatformKind -> NativePlatforms.nativePlatformByTargetNames(moduleData.konanTargets)
+                        mainModuleNode.isHmpp -> platformKind.defaultPlatform.filter { it.isRelevantFor(projectPlatforms) }
+                        else -> platformKind.defaultPlatform
                     }
                 }
                 .distinct()
