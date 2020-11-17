@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.idea.codeInsight.gradle.MultiplePluginVersionGradleImportingTestCase
 import org.jetbrains.kotlin.idea.codeInsight.gradle.mppImportTestMinVersionForMaster
 import org.jetbrains.kotlin.konan.target.HostManager
+import org.jetbrains.kotlin.platform.CommonPlatforms
 import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.platform.js.JsPlatforms
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
@@ -69,7 +70,7 @@ class NewMultiplatformProjectImportingTest : MultiplePluginVersionGradleImportin
             module("project")
             module("app")
             module("app_commonMain") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 libraryDependency("Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:${gradleKotlinPluginVersion}", DependencyScope.COMPILE)
                 moduleDependency("lib_commonMain", DependencyScope.COMPILE)
                 sourceFolder("app/src/commonMain/kotlin", SourceKotlinRootType)
@@ -78,7 +79,7 @@ class NewMultiplatformProjectImportingTest : MultiplePluginVersionGradleImportin
                 isCommon(true)
             }
             module("app_commonTest") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 libraryDependency("Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:${gradleKotlinPluginVersion}", DependencyScope.TEST)
                 moduleDependency("lib_commonMain", DependencyScope.TEST)
                 moduleDependency("app_commonMain", DependencyScope.TEST)
@@ -923,11 +924,11 @@ class NewMultiplatformProjectImportingTest : MultiplePluginVersionGradleImportin
         checkProjectStructure(true, false, false) {
             module("KotlinMPPL") {}
             module("KotlinMPPL.commonMain") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 isCommon(true)
             }
             module("KotlinMPPL.commonTest") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 isCommon(true)
             }
             module("KotlinMPPL.jsMain") {
@@ -952,11 +953,11 @@ class NewMultiplatformProjectImportingTest : MultiplePluginVersionGradleImportin
         checkProjectStructure(true, false, false) {
             module("KotlinMPPL") {}
             module("KotlinMPPL.commonMain") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 isCommon(true)
             }
             module("KotlinMPPL.commonTest") {
-                platform(jvmAndJsPlatform)
+                platform(CommonPlatforms.defaultCommonPlatform)
                 isCommon(true)
             }
             module("KotlinMPPL.jsMain") {
