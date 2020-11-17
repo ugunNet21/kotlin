@@ -72,6 +72,7 @@ fun KaptContext.doAnnotationProcessing(
             }?.also { compiler.getTaskListeners().add(it) }
 
             val additionalClassNames = JavacList.from(aggregatedTypes)
+            println("kapt: additionalClassNames " + additionalClassNames.joinToString())
             if (isJava9OrLater()) {
                 val processAnnotationsMethod =
                     compiler.javaClass.getMethod("processAnnotations", JavacList::class.java, java.util.Collection::class.java)
