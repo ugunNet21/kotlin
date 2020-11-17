@@ -12,5 +12,5 @@ import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.platform.isCommon
 
 class KotlinMultiplatformCommonTestMethodGradleConfigurationProducer : AbstractKotlinMultiplatformTestMethodGradleConfigurationProducer() {
-    override fun isApplicable(module: Module, platform: TargetPlatform) = module.isCommon
+    override fun isApplicable(module: Module, platform: TargetPlatform) = platform.isCommon()
 }
