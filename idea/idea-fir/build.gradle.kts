@@ -33,10 +33,13 @@ sourceSets {
     "test" { projectDefault() }
 }
 
-if (rootProject.findProperty("idea.fir.plugin") == "true") {
-    projectTest(parallel = true) {
-        dependsOn(":dist")
-        workingDir = rootDir
+projectTest(parallel = true) {
+    dependsOn(":dist")
+    workingDir = rootDir
+    doFirst {
+        if (rootProject.findProperty("idea.fir.plugin") != "true") {
+            error("Test task in the module should be executed with -Pidea.fir.plugin=true")
+        }
     }
 }
 
