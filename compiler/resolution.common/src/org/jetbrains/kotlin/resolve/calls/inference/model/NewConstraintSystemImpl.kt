@@ -28,6 +28,11 @@ class NewConstraintSystemImpl(
 {
     private val utilContext = constraintInjector.constraintIncorporator.utilContext
 
+    private val resultTypeResolver = ResultTypeResolver(
+        constraintInjector.typeApproximator,
+        constraintInjector.constraintIncorporator.trivialConstraintTypeInferenceOracle
+    )
+
     private val storage = MutableConstraintStorage()
     private var state = State.BUILDING
     private val typeVariablesTransaction: MutableList<TypeVariableMarker> = SmartList()
@@ -325,9 +330,7 @@ class NewConstraintSystemImpl(
     override fun fixVariable(variable: TypeVariableMarker, resultType: KotlinTypeMarker, position: FixVariableConstraintPosition<*>) {
         checkState(State.BUILDING, State.COMPLETION)
 
-        constraintInjector.addInitialEqualityConstraint(
-            this, variable.defaultType(), resultType, position
-        )
+        constraintInjector.addInitialEqualityConstraint(this, variable.defaultType(), resultType, position)
 
         val freshTypeConstructor = variable.freshTypeConstructor()
 
@@ -343,6 +346,41 @@ class NewConstraintSystemImpl(
         storage.fixedTypeVariables[freshTypeConstructor] = resultType
     }
 
+    private fun isInputTypeEqualToResultType(inputType: KotlinTypeMarker, resultType: KotlinTypeMarker): Boolean {
+        val areTypesEqual = AbstractTypeChecker.equalTypes(this, resultType, inputType)
+
+        if (areTypesEqual) return true
+
+        val inputTypeConstructor = inputType.typeConstructor()
+        val areResultTypeAndIntersectionInputTypeEqual = inputTypeConstructor.isIntersection() && inputTypeConstructor.supertypes().any {
+            AbstractTypeChecker.equalTypes(this, resultType, it)
+        }
+
+        if (areResultTypeAndIntersectionInputTypeEqual) return true
+
+        // there aren't any unsubstituted types, nothing more to check
+        if (!inputType.contains { it.typeConstructor() is TypeVariableTypeConstructorMarker }) return false
+
+        val typeVariables = if (inputTypeConstructor is TypeVariableTypeConstructorMarker) {
+            setOf(inputTypeConstructor as TypeConstructorMarker)
+        } else {
+            inputType.extractTypeVariables()
+        }
+
+        val typeVariablesWithResultTypes = typeVariables.associateWith {
+            val containedVariableWithConstraints = notFixedTypeVariables[it] ?: return false
+            val containedVariableResultType = resultTypeResolver.findResultType(
+                this, containedVariableWithConstraints, TypeVariableDirectionCalculator.ResolveDirection.UNKNOWN
+            )
+            if (!isProperType(containedVariableResultType)) return false
+            containedVariableResultType
+        }
+
+        val substitutor = typeSubstitutorByTypeConstructor(typeVariablesWithResultTypes)
+
+        return AbstractTypeChecker.equalTypes(this, resultType, substitutor.safeSubstitute(inputType))
+    }
+
     private fun checkOnlyInputTypesAnnotation(
         variableWithConstraints: MutableVariableWithConstraints?,
         resultType: KotlinTypeMarker
@@ -351,12 +389,10 @@ class NewConstraintSystemImpl(
         val variableHasOnlyInputTypes = with(utilContext) { variableWithConstraints.typeVariable.hasOnlyInputTypesAttribute() }
         if (!variableHasOnlyInputTypes) return
 
-        val resultTypeIsInputType = variableWithConstraints.getProjectedInputCallTypes(utilContext).any { inputType ->
-            if (AbstractTypeChecker.equalTypes(this, resultType, inputType)) return@any true
-            val constructor = inputType.typeConstructor()
-            constructor.isIntersection() && constructor.supertypes().any { AbstractTypeChecker.equalTypes(this, resultType, it) }
-        }
-        if (!resultTypeIsInputType) {
+        val inputTypes = variableWithConstraints.getProjectedInputCallTypes(utilContext)
+        val isSomeInputTypeEqualToResultType = inputTypes.any { inputType -> isInputTypeEqualToResultType(inputType, resultType) }
+
+        if (!isSomeInputTypeEqualToResultType) {
             addError(OnlyInputTypesDiagnostic(variableWithConstraints.typeVariable))
         }
     }
