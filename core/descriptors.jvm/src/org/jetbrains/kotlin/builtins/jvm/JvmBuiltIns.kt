@@ -89,4 +89,14 @@ class JvmBuiltIns(storageManager: StorageManager, val kind: Kind) : KotlinBuiltI
 
     override fun getClassDescriptorFactories() =
         super.getClassDescriptorFactories() + JvmBuiltInClassDescriptorFactory(storageManager, builtInsModule)
+
+    override fun reportNullModule() {
+        val message = """JvmBuiltIns without module.
+            |KIND: $kind
+            |owner module: $ownerModuleDescriptor
+            |storage manager: $storageManager
+            |created at: ${createdAt.stackTrace}
+        """.trimMargin()
+        throw IllegalStateException(message)
+    }
 }

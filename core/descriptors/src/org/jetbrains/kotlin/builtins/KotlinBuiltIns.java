@@ -47,7 +47,7 @@ public abstract class KotlinBuiltIns {
 
     private final StorageManager storageManager;
 
-    private final Throwable createdAt;
+    protected final Throwable createdAt;
 
     public static final Name BUILTINS_MODULE_NAME = Name.special("<built-ins module>");
 
@@ -163,8 +163,13 @@ public abstract class KotlinBuiltIns {
         }
     }
 
+    protected void reportNullModule() {}
+
     @NotNull
     public ModuleDescriptorImpl getBuiltInsModule() {
+        if (builtInsModule == null) {
+            reportNullModule();
+        }
         return builtInsModule;
     }
 
