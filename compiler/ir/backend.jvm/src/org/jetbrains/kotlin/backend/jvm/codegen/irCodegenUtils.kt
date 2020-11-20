@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.ir2string
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmGeneratorExtensions
+import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
 import org.jetbrains.kotlin.backend.jvm.lower.MultifileFacadeFileEntry
 import org.jetbrains.kotlin.builtins.StandardNames.FqNames
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
@@ -30,7 +31,6 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
-import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.checkers.ExpectedActualDeclarationChecker
 import org.jetbrains.kotlin.resolve.inline.INLINE_ONLY_ANNOTATION_FQ_NAME
@@ -344,14 +344,9 @@ internal fun IrDeclaration.isDeprecatedCallable(context: JvmBackendContext): Boo
     isAnnotatedWithDeprecated ||
             annotations.any { it.symbol == context.ir.symbols.javaLangDeprecatedConstructorWithDeprecatedFlag }
 
-// We can't check for JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_ANNOTATIONS because for interface methods
-// moved to DefaultImpls, origin is changed to DEFAULT_IMPLS
-// TODO: Fix origin somehow
-val IrFunction.isSyntheticMethodForProperty: Boolean
-    get() = name.asString().endsWith(JvmAbi.ANNOTATED_PROPERTY_METHOD_NAME_SUFFIX)
-
 internal fun IrFunction.isDeprecatedFunction(context: JvmBackendContext): Boolean =
-    isSyntheticMethodForProperty || isDeprecatedCallable(context) ||
+    origin == JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_OR_TYPEALIAS_ANNOTATIONS ||
+            isDeprecatedCallable(context) ||
             (this as? IrSimpleFunction)?.correspondingPropertySymbol?.owner?.isDeprecatedCallable(context) == true ||
             isAccessorForDeprecatedPropertyImplementedByDelegation
 
