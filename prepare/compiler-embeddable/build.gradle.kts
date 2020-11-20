@@ -43,6 +43,12 @@ compilerDummyJar(compilerDummyForDependenciesRewriting("compilerDummy") {
 val runtimeJar = runtimeJar(embeddableCompiler()) {
     exclude("com/sun/jna/**")
     exclude("org/jetbrains/annotations/**")
+    exclude("META-INF/extensions/environment.xml")
+    rename {
+        println("------------------------------------------")
+        println("File:" + it)
+        it
+    }
     mergeServiceFiles()
 }
 
