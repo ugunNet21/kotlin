@@ -1,13 +1,13 @@
 package test
 
 public open class ParameterNames {
-    public constructor ParameterNames(/*0*/ longConstructorParam: kotlin.Long, /*1*/ stringConstructorParam: kotlin.String!)
-    public open fun foo(/*0*/ longMethodParam: kotlin.Long, /*1*/ intMethodParam: kotlin.Int): kotlin.Unit
+    public constructor ParameterNames(/*0*/ p0: kotlin.Long, /*1*/ p1: kotlin.String!)
+    public open fun foo(/*0*/ p0: kotlin.Long, /*1*/ p1: kotlin.Int): kotlin.Unit
 
     public/*package*/ final enum class Enum : kotlin.Enum<test.ParameterNames.Enum!> {
         enum entry E
 
-        private constructor Enum(/*0*/ doubleEnumParam: kotlin.Double, /*1*/ stringEnumParam: kotlin.String!)
+        private constructor Enum(/*0*/ p0: kotlin.Double, /*1*/ p1: kotlin.String!)
         public final override /*1*/ /*fake_override*/ val name: kotlin.String
         public final override /*1*/ /*fake_override*/ val ordinal: kotlin.Int
         protected final override /*1*/ /*fake_override*/ fun clone(): kotlin.Any
@@ -21,9 +21,9 @@ public open class ParameterNames {
     }
 
     public/*package*/ open inner class Inner {
-        public constructor Inner(/*0*/ doubleInnerParam: kotlin.Double, /*1*/ objectInnerParam: kotlin.Any!)
+        public constructor Inner(/*0*/ p0: kotlin.Double, /*1*/ p1: kotlin.Any!)
     }
 
     // Static members
-    public/*package*/ open fun bar(/*0*/ staticMethodParam: test.ParameterNames!): kotlin.Unit
+    public/*package*/ open fun bar(/*0*/ p0: test.ParameterNames!): kotlin.Unit
 }
