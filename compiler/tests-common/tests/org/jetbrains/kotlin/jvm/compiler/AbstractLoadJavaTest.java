@@ -299,7 +299,19 @@ public abstract class AbstractLoadJavaTest extends TestCaseWithTmpdir {
         Pair<PackageViewDescriptor, BindingContext> javaPackageAndContext = compileJavaAndLoadTestPackageAndBindingContextFromBinary(
                 srcFiles, compiledDir, ConfigurationKind.ALL
         );
-        checkJavaPackage(getExpectedFile(javaFileName.replaceFirst("\\.java$", ".txt")), javaPackageAndContext.first, javaPackageAndContext.second, configuration);
+
+
+
+        checkJavaPackage(getExpectedFile(
+                useTxtSuffixIfFileExists(javaFileName.replaceFirst("\\.java$", ".txt"), "compiled")
+        ), javaPackageAndContext.first, javaPackageAndContext.second, configuration);
+    }
+
+    public static String useTxtSuffixIfFileExists(String name, String suffix) {
+        File differentResultFile = KotlinTestUtils.replaceExtension(new File(name), suffix + ".txt");
+        if (differentResultFile.exists()) return differentResultFile.getPath();
+
+        return name;
     }
 
     @NotNull

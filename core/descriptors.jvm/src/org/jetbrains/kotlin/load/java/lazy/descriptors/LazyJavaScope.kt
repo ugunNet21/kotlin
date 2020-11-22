@@ -82,6 +82,11 @@ abstract class LazyJavaScope(
     // Fake overrides, values()/valueOf(), etc.
     protected abstract fun computeNonDeclaredFunctions(result: MutableCollection<SimpleFunctionDescriptor>, name: Name)
 
+    // It has a similar semantics meaning to computeNonDeclaredFunctions, but it's being called just once per class
+    // While computeNonDeclaredFunctions is being called once per scope instance (once per KotlinTypeRefiner)
+    //
+    protected open fun computeImplicitlyDeclaredFunctions(result: MutableCollection<SimpleFunctionDescriptor>, name: Name) {}
+
     protected abstract fun getDispatchReceiverParameter(): ReceiverParameterDescriptor?
 
     private val declaredFunctions: MemoizedFunctionToNotNull<Name, Collection<SimpleFunctionDescriptor>> =
@@ -97,6 +102,8 @@ abstract class LazyJavaScope(
                 c.components.javaResolverCache.recordMethod(method, descriptor)
                 result.add(descriptor)
             }
+
+            computeImplicitlyDeclaredFunctions(result, name)
 
             result
         }
@@ -154,7 +161,8 @@ abstract class LazyJavaScope(
     protected fun resolveMethodToFunctionDescriptor(method: JavaMethod): JavaMethodDescriptor {
         val annotations = c.resolveAnnotations(method)
         val functionDescriptorImpl = JavaMethodDescriptor.createJavaMethod(
-            ownerDescriptor, annotations, method.name, c.components.sourceElementFactory.source(method)
+            ownerDescriptor, annotations, method.name, c.components.sourceElementFactory.source(method),
+            declaredMemberIndex().hasRecordComponent(method.name) && method.valueParameters.isEmpty()
         )
 
         val c = c.childForMethod(functionDescriptorImpl, method)

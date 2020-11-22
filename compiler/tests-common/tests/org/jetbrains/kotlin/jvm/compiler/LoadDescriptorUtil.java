@@ -170,7 +170,11 @@ public class LoadDescriptorUtil {
         args.add("-classpath");
         args.add(classpath.stream().map(File::getPath).collect(Collectors.joining(File.pathSeparator)));
 
-        KotlinTestUtils.compileJavaFiles(javaFiles, args);
+        args.add("--enable-preview");
+        args.add("--release");
+        args.add("15");
+
+        KotlinTestUtils.compileJavaFilesExternallyWithJava9(javaFiles, args);
     }
 
     @NotNull

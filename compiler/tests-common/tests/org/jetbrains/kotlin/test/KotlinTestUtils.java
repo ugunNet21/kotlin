@@ -389,14 +389,15 @@ public class KotlinTestUtils {
 
     @NotNull
     public static File getJdk9Home() {
-        String jdk9 = System.getenv("JDK_9");
-        if (jdk9 == null) {
-            jdk9 = System.getenv("JDK_19");
-            if (jdk9 == null) {
-                throw new AssertionError("Environment variable JDK_9 is not set!");
-            }
-        }
-        return new File(jdk9);
+        return new File("/opt/java/jdk-15/");
+        //String jdk9 = System.getenv("JDK_9");
+        //if (jdk9 == null) {
+        //    jdk9 = System.getenv("JDK_19");
+        //    if (jdk9 == null) {
+        //        throw new AssertionError("Environment variable JDK_9 is not set!");
+        //    }
+        //}
+        //return new File("/opt/java/jdk-15/");
     }
 
     @Nullable
