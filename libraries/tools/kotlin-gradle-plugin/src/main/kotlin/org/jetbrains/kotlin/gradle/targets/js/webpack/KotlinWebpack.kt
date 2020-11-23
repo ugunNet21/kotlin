@@ -185,7 +185,7 @@ constructor(
     @Internal
     var generateConfigOnly: Boolean = false
 
-    @Input
+    @Internal
     val webpackConfigAppliers: MutableList<(KotlinWebpackConfig) -> Unit> =
         mutableListOf()
 
