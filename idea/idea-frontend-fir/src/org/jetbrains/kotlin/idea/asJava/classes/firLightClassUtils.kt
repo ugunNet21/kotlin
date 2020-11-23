@@ -56,7 +56,6 @@ fun createFirLightClassNoCache(classOrObject: KtClassOrObject): KtLightClass? {
     return when {
         classOrObject is KtEnumEntry -> lightClassForEnumEntry(classOrObject)
         classOrObject.isObjectLiteral() -> return null //TODO
-        //classOrObject.safeIsLocal() -> return null //TODO
         classOrObject.hasModifier(KtTokens.INLINE_KEYWORD) -> return null //TODO
         else -> {
             analyze(classOrObject) {
