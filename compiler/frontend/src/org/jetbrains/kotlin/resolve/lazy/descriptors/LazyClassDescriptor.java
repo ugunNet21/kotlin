@@ -269,7 +269,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
         );
 
         // TODO: only consider classes from the same file, not the whole package fragment
-        this.sealedSubclasses = storageManager.createLazyValue(() -> DescriptorUtilsKt.computeSealedSubclasses(this, c.getLanguageVersionSettings()));
+        this.sealedSubclasses = storageManager.createLazyValue(() -> c.getSealedClassInheritorsProvider().computeSealedSubclasses(this, c.getLanguageVersionSettings()));
     }
 
     private static boolean isIllegalInner(@NotNull DeclarationDescriptor descriptor) {
