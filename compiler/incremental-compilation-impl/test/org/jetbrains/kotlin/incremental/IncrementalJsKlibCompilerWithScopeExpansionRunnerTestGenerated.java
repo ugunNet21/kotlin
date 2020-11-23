@@ -570,6 +570,11 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             runTest("jps-plugin/testData/incremental/pureKotlin/returnTypeChanged/");
         }
 
+        @TestMetadata("sealedClasses")
+        public void testSealedClasses() throws Exception {
+            runTest("jps-plugin/testData/incremental/pureKotlin/sealedClasses/");
+        }
+
         @TestMetadata("secondaryConstructorInlined")
         public void testSecondaryConstructorInlined() throws Exception {
             runTest("jps-plugin/testData/incremental/pureKotlin/secondaryConstructorInlined/");
