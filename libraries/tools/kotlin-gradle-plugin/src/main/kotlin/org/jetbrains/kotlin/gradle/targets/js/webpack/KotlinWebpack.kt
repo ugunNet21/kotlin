@@ -185,8 +185,16 @@ constructor(
     @Internal
     var generateConfigOnly: Boolean = false
 
+    @Nested
+    val synthConfig = KotlinWebpackConfig()
+
+    fun commonWebpackConfig(body: KotlinWebpackConfig.() -> Unit) {
+        synthConfig.body()
+        webpackConfigAppliers.add(body)
+    }
+
     @Internal
-    val webpackConfigAppliers: MutableList<(KotlinWebpackConfig) -> Unit> =
+    private val webpackConfigAppliers: MutableList<(KotlinWebpackConfig) -> Unit> =
         mutableListOf()
 
     private fun createRunner(): KotlinWebpackRunner {
