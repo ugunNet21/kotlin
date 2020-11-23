@@ -36,10 +36,10 @@ class PropertyLazyInitLowering(
     private val irFactory
         get() = context.irFactory
 
-    val fileToInitializationFuns
+    private val fileToInitializationFuns
         get() = context.fileToInitializationFuns
 
-    val fileToPurenessInitializers
+    private val fileToInitializerPureness
         get() = context.fileToInitializerPureness
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
@@ -55,7 +55,7 @@ class PropertyLazyInitLowering(
 
         val initFun = (when {
             file in fileToInitializationFuns -> fileToInitializationFuns[file]
-            fileToPurenessInitializers[file] == true -> null
+            fileToInitializerPureness[file] == true -> null
             else -> {
                 createInitializationFunction(file).also {
                     fileToInitializationFuns[file] = it
@@ -99,7 +99,7 @@ class PropertyLazyInitLowering(
         if (fieldToInitializer.isEmpty()) return null
 
         val allFieldsInFilePure = allFieldsInFilePure(fieldToInitializer.values)
-        fileToPurenessInitializers[file] = allFieldsInFilePure
+        fileToInitializerPureness[file] = allFieldsInFilePure
         if (allFieldsInFilePure) {
             return null
         }
@@ -214,7 +214,7 @@ class RemoveInitializersForLazyProperties(
     private val context: JsIrBackendContext
 ) : DeclarationTransformer {
 
-    val fileToPurenessInitializers
+    private val fileToInitializerPureness
         get() = context.fileToInitializerPureness
 
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
@@ -226,9 +226,9 @@ class RemoveInitializersForLazyProperties(
 
         val file = declaration.parent as? IrFile ?: return null
 
-        if (fileToPurenessInitializers[file] == true) return null
+        if (fileToInitializerPureness[file] == true) return null
 
-        val allFieldsInFilePure = fileToPurenessInitializers[file]
+        val allFieldsInFilePure = fileToInitializerPureness[file]
             ?: calculateFileFieldsPureness(file)
 
         if (allFieldsInFilePure) {
@@ -249,7 +249,7 @@ class RemoveInitializersForLazyProperties(
             .values
 
         val allFieldsInFilePure = allFieldsInFilePure(expressions)
-        fileToPurenessInitializers[file] = allFieldsInFilePure
+        fileToInitializerPureness[file] = allFieldsInFilePure
         return allFieldsInFilePure
     }
 }
