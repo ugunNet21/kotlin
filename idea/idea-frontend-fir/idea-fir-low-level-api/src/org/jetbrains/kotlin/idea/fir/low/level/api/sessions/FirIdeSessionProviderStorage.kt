@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.fir.BuiltinTypes
 import org.jetbrains.kotlin.idea.caches.project.ModuleSourceInfo
 import org.jetbrains.kotlin.idea.caches.trackers.KotlinModuleOutOfCodeBlockModificationTracker
 import org.jetbrains.kotlin.idea.fir.low.level.api.FirPhaseRunner
-import org.jetbrains.kotlin.idea.fir.low.level.api.FirTransformerProvider
 import org.jetbrains.kotlin.idea.fir.low.level.api.util.executeWithoutPCE
 import java.util.concurrent.ConcurrentHashMap
 
@@ -18,8 +17,7 @@ internal class FirIdeSessionProviderStorage(private val project: Project) {
     private val sessionsCache = ConcurrentHashMap<ModuleSourceInfo, FromModuleViewSessionCache>()
 
     fun getSessionProvider(rootModule: ModuleSourceInfo): FirIdeSessionProvider {
-        val transformerProvider = FirTransformerProvider()
-        val firPhaseRunner = FirPhaseRunner(transformerProvider)
+        val firPhaseRunner = FirPhaseRunner()
 
         val builtinTypes = BuiltinTypes()
         val builtinsAndCloneableSession = FirIdeSessionFactory.createBuiltinsAndCloneableSession(project, builtinTypes)

@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.scope
 import org.jetbrains.kotlin.fir.scopes.FakeOverrideTypeCalculator
 import org.jetbrains.kotlin.fir.scopes.FirContainingNamesAwareScope
@@ -61,7 +62,7 @@ internal class KtFirScopeProvider(
                     val firSession = fir.session
                     fir.unsubstitutedScope(
                         firSession,
-                        firResolveState.firTransformerProvider.getScopeSession(firSession),
+                        ScopeSession(),
                         withForcedTypeCalculator = false
                     )
                 }.also(firScopeStorage::register)
@@ -98,7 +99,7 @@ internal class KtFirScopeProvider(
         val firSession = firResolveState.rootModuleSession
         val firTypeScope = type.coneType.scope(
             firSession,
-            firResolveState.firTransformerProvider.getScopeSession(firSession),
+            ScopeSession(),
             FakeOverrideTypeCalculator.Forced
         ) ?: return null
         return convertToKtScope(firTypeScope)
