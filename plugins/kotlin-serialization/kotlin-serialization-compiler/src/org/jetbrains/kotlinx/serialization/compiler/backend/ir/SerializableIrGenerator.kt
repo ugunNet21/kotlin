@@ -34,9 +34,6 @@ import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.SE
 import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.SINGLE_MASK_FIELD_MISSING_FUNC_FQ
 import org.jetbrains.kotlinx.serialization.compiler.resolve.SerialEntityNames.initializedDescriptorFieldName
 
-// Another synthetic origin... it's time to stop?
-object SERIALIZABLE_PLUGIN_SYNTHETIC_ORIGIN : IrDeclarationOriginImpl("SERIALIZER SYNTHETIC", true)
-
 class SerializableIrGenerator(
     val irClass: IrClass,
     override val compilerContext: SerializationPluginContext,
@@ -240,7 +237,7 @@ class SerializableIrGenerator(
         val function = irClass.createInlinedFunction(
             Name.identifier(descriptorGenerationFunctionName),
             DescriptorVisibilities.PRIVATE,
-            SERIALIZABLE_PLUGIN_SYNTHETIC_ORIGIN,
+            SERIALIZABLE_PLUGIN_ORIGIN,
             serialDescItType
         ) {
             val serialDescVar = irTemporary(
@@ -256,7 +253,7 @@ class SerializableIrGenerator(
         return irClass.addField {
             name = Name.identifier(initializedDescriptorFieldName)
             visibility = DescriptorVisibilities.PRIVATE
-            origin = SERIALIZABLE_PLUGIN_SYNTHETIC_ORIGIN
+            origin = SERIALIZABLE_PLUGIN_ORIGIN
             isFinal = true
             isStatic = true
             type = serialDescItType
